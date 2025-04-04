@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -63,21 +62,20 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for our campus blog
 				campus: {
-					primary: '#3b5998',    // Academic blue
-					secondary: '#8b5cf6',  // Purple for educators
-					accent: '#f97316',     // Orange for highlights
-					muted: '#f8fafc',      // Light background
-					"dark-blue": '#1e3a8a', // For headers
-					"light-blue": '#dbeafe', // For backgrounds
+					primary: '#3b5998',
+					secondary: '#8b5cf6',
+					accent: '#f97316',
+					muted: '#f8fafc',
+					"dark-blue": '#1e3a8a',
+					"light-blue": '#dbeafe',
 				},
 				category: {
-					"arts": "#ec4899",      // Pink for arts
-					"science": "#0ea5e9",   // Blue for science
-					"humanities": "#8b5cf6", // Purple for humanities
-					"technology": "#10b981", // Green for technology
-					"business": "#f59e0b",   // Amber for business
+					"arts": "#ec4899",
+					"science": "#0ea5e9",
+					"humanities": "#8b5cf6",
+					"technology": "#10b981",
+					"business": "#f59e0b",
 				}
 			},
 			borderRadius: {

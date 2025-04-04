@@ -405,3 +405,7 @@ export const getPostsByCategory = (categorySlug: string): Post[] => {
 export const getPostBySlug = (slug: string): Post | undefined => {
   return posts.find(post => post.slug === slug);
 };
+
+export const getUserById = (userId: string): Author | undefined => {
+  return authors.find(author => author.id === userId);
+};
