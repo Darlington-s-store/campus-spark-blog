@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,22 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Custom colors for our campus blog
+				campus: {
+					primary: '#3b5998',    // Academic blue
+					secondary: '#8b5cf6',  // Purple for educators
+					accent: '#f97316',     // Orange for highlights
+					muted: '#f8fafc',      // Light background
+					"dark-blue": '#1e3a8a', // For headers
+					"light-blue": '#dbeafe', // For backgrounds
+				},
+				category: {
+					"arts": "#ec4899",      // Pink for arts
+					"science": "#0ea5e9",   // Blue for science
+					"humanities": "#8b5cf6", // Purple for humanities
+					"technology": "#10b981", // Green for technology
+					"business": "#f59e0b",   // Amber for business
 				}
 			},
 			borderRadius: {
@@ -84,12 +101,27 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
-			}
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.4s ease-out'
+			},
+			fontFamily: {
+				sans: ['Inter', 'sans-serif'],
+				serif: ['Georgia', 'serif'],
+			},
 		}
 	},
 	plugins: [require("tailwindcss-animate")],
