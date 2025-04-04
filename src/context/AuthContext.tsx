@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   register: (userData: RegisterData) => Promise<boolean>;
+  requireAuth: (redirectUrl?: string) => boolean; // Add this method
 }
 
 interface RegisterData {
@@ -132,6 +133,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
   
+  // New method to check if user is authenticated and redirect if not
+  const requireAuth = (redirectUrl?: string): boolean => {
+    if (!user && !isLoading) {
+      toast({
+        title: 'Authentication required',
+        description: 'Please sign in to access this feature.',
+        variant: 'destructive',
+      });
+      
+      return false;
+    }
+    
+    return true;
+  };
+  
   return (
     <AuthContext.Provider
       value={{
@@ -141,6 +157,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         logout,
         register,
+        requireAuth,
       }}
     >
       {children}

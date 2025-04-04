@@ -1,7 +1,7 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '@/context/AuthContext';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,13 @@ const WritePost = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { requireAuth, isAuthenticated } = useAuth();
+  
+  useEffect(() => {
+    if (!requireAuth()) {
+      navigate('/login', { state: { from: '/write' } });
+    }
+  }, [isAuthenticated, navigate, requireAuth]);
   
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -120,7 +127,6 @@ const WritePost = () => {
                 </CardHeader>
                 
                 <CardContent className="space-y-6">
-                  {/* Title */}
                   <div className="space-y-2">
                     <Label htmlFor="title" className="text-base">Title*</Label>
                     <Input 
@@ -132,7 +138,6 @@ const WritePost = () => {
                     />
                   </div>
                   
-                  {/* Excerpt */}
                   <div className="space-y-2">
                     <Label htmlFor="excerpt" className="text-base">Excerpt*</Label>
                     <Textarea 
@@ -148,7 +153,6 @@ const WritePost = () => {
                     </p>
                   </div>
                   
-                  {/* Content */}
                   <div className="space-y-2">
                     <Label htmlFor="content" className="text-base">Content*</Label>
                     <Textarea 
@@ -168,7 +172,6 @@ const WritePost = () => {
                     </div>
                   </div>
                   
-                  {/* Category */}
                   <div className="space-y-2">
                     <Label htmlFor="category" className="text-base">Category*</Label>
                     <Select value={category} onValueChange={setCategory}>
@@ -185,7 +188,6 @@ const WritePost = () => {
                     </Select>
                   </div>
                   
-                  {/* Tags */}
                   <div className="space-y-2">
                     <Label className="text-base">Tags</Label>
                     <div className="flex items-center">
@@ -227,7 +229,6 @@ const WritePost = () => {
                     )}
                   </div>
                   
-                  {/* Cover Image */}
                   <div className="space-y-2">
                     <Label className="text-base">Cover Image</Label>
                     {!previewUrl ? (

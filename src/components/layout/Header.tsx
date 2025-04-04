@@ -28,7 +28,10 @@ import {
   Settings,
   Bookmark,
   Menu,
-  X
+  X,
+  Home,
+  FileText,
+  Mail
 } from 'lucide-react';
 
 const Header = () => {
@@ -71,6 +74,22 @@ const Header = () => {
             <NavigationMenu className="hidden md:flex">
               <NavigationMenuList>
                 <NavigationMenuItem>
+                  <Link to="/" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:text-campus-primary">
+                    <div className="flex items-center gap-1">
+                      <Home className="h-4 w-4" />
+                      <span>Home</span>
+                    </div>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link to="/blog" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:text-campus-primary">
+                    <div className="flex items-center gap-1">
+                      <FileText className="h-4 w-4" />
+                      <span>Blog</span>
+                    </div>
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
                   <NavigationMenuTrigger>Categories</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="grid gap-3 p-4 w-[400px] grid-cols-2">
@@ -102,8 +121,11 @@ const Header = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link to="/featured" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:text-campus-primary">
-                    Featured
+                  <Link to="/contact" className="block px-4 py-2 text-sm font-medium text-gray-700 hover:text-campus-primary">
+                    <div className="flex items-center gap-1">
+                      <Mail className="h-4 w-4" />
+                      <span>Contact</span>
+                    </div>
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
@@ -217,6 +239,18 @@ const Header = () => {
         {showMobileMenu && (
           <div className="md:hidden mt-4 border-t pt-4 animate-fade-in">
             <nav className="flex flex-col space-y-4">
+              <Link to="/" className="flex items-center text-gray-700 hover:text-campus-primary">
+                <Home className="h-4 w-4 mr-2" />
+                Home
+              </Link>
+              <Link to="/blog" className="flex items-center text-gray-700 hover:text-campus-primary">
+                <FileText className="h-4 w-4 mr-2" />
+                Blog
+              </Link>
+              <Link to="/contact" className="flex items-center text-gray-700 hover:text-campus-primary">
+                <Mail className="h-4 w-4 mr-2" />
+                Contact
+              </Link>
               <Link to="/category/arts" className="flex items-center text-gray-700 hover:text-campus-primary">
                 <span className="w-2 h-2 rounded-full bg-category-arts mr-2"></span>
                 Arts & Design
@@ -238,9 +272,6 @@ const Header = () => {
                 Business
               </Link>
               <div className="border-t pt-4">
-                <Link to="/featured" className="block py-2 text-gray-700 hover:text-campus-primary">
-                  Featured
-                </Link>
                 <Link to="/about" className="block py-2 text-gray-700 hover:text-campus-primary">
                   About
                 </Link>

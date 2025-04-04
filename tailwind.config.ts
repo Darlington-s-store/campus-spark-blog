@@ -1,161 +1,123 @@
 
-import type { Config } from "tailwindcss";
+import { fontFamily } from "tailwindcss/defaultTheme"
+import plugin from "tailwindcss/plugin"
+import { Config } from "tailwindcss"
+import typographyPlugin from "@tailwindcss/typography"
 
 export default {
-	darkMode: ["class"],
-	content: [
-		"./pages/**/*.{ts,tsx}",
-		"./components/**/*.{ts,tsx}",
-		"./app/**/*.{ts,tsx}",
-		"./src/**/*.{ts,tsx}",
-	],
-	prefix: "",
-	theme: {
-		container: {
-			center: true,
-			padding: '2rem',
-			screens: {
-				'2xl': '1400px'
-			}
-		},
-		extend: {
-			colors: {
-				border: 'hsl(var(--border))',
-				input: 'hsl(var(--input))',
-				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
-				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
-				},
-				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
-				},
-				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
-				},
-				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
-				},
-				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
-				},
-				popover: {
-					DEFAULT: 'hsl(var(--popover))',
-					foreground: 'hsl(var(--popover-foreground))'
-				},
-				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
-				},
-				sidebar: {
-					DEFAULT: 'hsl(var(--sidebar-background))',
-					foreground: 'hsl(var(--sidebar-foreground))',
-					primary: 'hsl(var(--sidebar-primary))',
-					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
-					accent: 'hsl(var(--sidebar-accent))',
-					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
-					border: 'hsl(var(--sidebar-border))',
-					ring: 'hsl(var(--sidebar-ring))'
-				},
-				campus: {
-					primary: '#3b5998',
-					secondary: '#8b5cf6',
-					accent: '#f97316',
-					muted: '#f8fafc',
-					"dark-blue": '#1e3a8a',
-					"light-blue": '#dbeafe',
-				},
-				category: {
-					"arts": "#ec4899",
-					"science": "#0ea5e9",
-					"humanities": "#8b5cf6",
-					"technology": "#10b981",
-					"business": "#f59e0b",
-				}
-			},
-			borderRadius: {
-				lg: 'var(--radius)',
-				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
-			},
-			keyframes: {
-				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
-				},
-				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
-				},
-				'fade-in': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(10px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
-				}
-			},
-			animation: {
-				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.4s ease-out'
-			},
-			fontFamily: {
-				sans: ['Inter', 'sans-serif'],
-				serif: ['Georgia', 'serif'],
-			},
-			typography: {
-				DEFAULT: {
-					css: {
-						maxWidth: 'none',
-						color: 'inherit',
-						a: {
-							color: 'inherit',
-							'&:hover': {
-								color: 'var(--tw-prose-links)',
-							},
-							textDecoration: 'none',
-						},
-						h1: {
-							fontFamily: 'Georgia, serif',
-							fontWeight: '500',
-						},
-						h2: {
-							fontFamily: 'Georgia, serif',
-							fontWeight: '500',
-						},
-						h3: {
-							fontFamily: 'Georgia, serif',
-							fontWeight: '500',
-						},
-						h4: {
-							fontFamily: 'Georgia, serif',
-							fontWeight: '500',
-						},
-					},
-				},
-			},
-		}
-	},
-	plugins: [
-		require("tailwindcss-animate"),
-		require("@tailwindcss/typography"),
-	],
-} satisfies Config;
+  darkMode: ["class"],
+  content: [
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+  ],
+  theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
+    extend: {
+      fontFamily: {
+        sans: ["Inter", ...fontFamily.sans],
+        serif: ['Georgia', 'Cambria', ...fontFamily.serif],
+      },
+      colors: {
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        campus: {
+          primary: "#4A90E2",
+          secondary: "#6B7280",
+          "light-blue": "#EBF4FF",
+          "dark-blue": "#2563EB",
+        },
+        category: {
+          arts: "#F43F5E",
+          science: "#06B6D4",
+          humanities: "#8B5CF6",
+          technology: "#10B981",
+          business: "#F59E0B",
+        },
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
+        },
+        popover: {
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
+        },
+        card: {
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fadeIn 0.2s ease-in-out",
+      },
+      gridTemplateColumns: {
+        sidebar: "260px auto",
+        "sidebar-collapsed": "64px auto",
+      },
+    },
+  },
+  plugins: [
+    typographyPlugin,
+    plugin(({ addVariant }) => {
+      addVariant("sidebar-expanded", '&:has([data-sidebar-expanded="true"])')
+      addVariant(
+        "sidebar-collapsed",
+        '&:has([data-sidebar-expanded="false"])'
+      )
+    }),
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.campus-container': {
+          'max-width': '1280px',
+          'margin-left': 'auto',
+          'margin-right': 'auto',
+          'padding-left': '1rem',
+          'padding-right': '1rem',
+        },
+      })
+    }),
+  ],
+} satisfies Config
