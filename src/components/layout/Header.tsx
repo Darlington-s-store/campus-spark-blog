@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   NavigationMenu,
@@ -13,6 +13,17 @@ import {
 import { Search, BookOpen, User, PenTool } from 'lucide-react';
 
 const Header = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = false; // Replace with actual auth state
+
+  const handleWritePost = () => {
+    if (isLoggedIn) {
+      navigate('/write');
+    } else {
+      navigate('/login', { state: { from: '/write' } });
+    }
+  };
+
   return (
     <header className="border-b bg-white shadow-sm">
       <div className="campus-container py-4">
@@ -80,15 +91,44 @@ const Header = () => {
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             </div>
             
-            <Button variant="outline" size="sm" className="flex items-center gap-2">
-              <User className="h-4 w-4" />
-              <span>Sign In</span>
-            </Button>
-            
-            <Button size="sm" className="flex items-center gap-2 bg-campus-primary hover:bg-campus-dark-blue">
-              <PenTool className="h-4 w-4" />
-              <span>Write</span>
-            </Button>
+            {isLoggedIn ? (
+              <div className="flex items-center space-x-4">
+                <Link to="/user/123">
+                  <img 
+                    src="https://randomuser.me/api/portraits/men/45.jpg" 
+                    alt="Profile" 
+                    className="w-8 h-8 rounded-full border-2 border-campus-light-blue"
+                  />
+                </Link>
+                
+                <Button 
+                  onClick={handleWritePost}
+                  size="sm" 
+                  className="flex items-center gap-2 bg-campus-primary hover:bg-campus-dark-blue"
+                >
+                  <PenTool className="h-4 w-4" />
+                  <span>Write</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <Link to="/login">
+                  <Button variant="outline" size="sm" className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    <span>Sign In</span>
+                  </Button>
+                </Link>
+                
+                <Button 
+                  onClick={handleWritePost}
+                  size="sm" 
+                  className="flex items-center gap-2 bg-campus-primary hover:bg-campus-dark-blue"
+                >
+                  <PenTool className="h-4 w-4" />
+                  <span>Write</span>
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
