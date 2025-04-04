@@ -1,4 +1,3 @@
-
 import { Post, Author, Category } from "@/types/blog";
 
 export const categories: Category[] = [
@@ -408,4 +407,8 @@ export const getPostBySlug = (slug: string): Post | undefined => {
 
 export const getUserById = (userId: string): Author | undefined => {
   return authors.find(author => author.id === userId);
+};
+
+export const getAllPosts = () => {
+  return posts;
 };
