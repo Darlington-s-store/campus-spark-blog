@@ -122,7 +122,41 @@ export default {
 				sans: ['Inter', 'sans-serif'],
 				serif: ['Georgia', 'serif'],
 			},
+			typography: {
+				DEFAULT: {
+					css: {
+						maxWidth: 'none',
+						color: 'inherit',
+						a: {
+							color: 'inherit',
+							'&:hover': {
+								color: 'var(--tw-prose-links)',
+							},
+							textDecoration: 'none',
+						},
+						h1: {
+							fontFamily: 'Georgia, serif',
+							fontWeight: '500',
+						},
+						h2: {
+							fontFamily: 'Georgia, serif',
+							fontWeight: '500',
+						},
+						h3: {
+							fontFamily: 'Georgia, serif',
+							fontWeight: '500',
+						},
+						h4: {
+							fontFamily: 'Georgia, serif',
+							fontWeight: '500',
+						},
+					},
+				},
+			},
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		require("@tailwindcss/typography"),
+	],
 } satisfies Config;
