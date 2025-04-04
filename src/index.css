@@ -1,5 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Georgia:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -105,11 +106,13 @@
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
   
-  .blog-content {
-    @apply prose prose-lg max-w-none prose-headings:font-serif prose-headings:font-medium prose-a:text-campus-primary prose-a:no-underline hover:prose-a:underline;
-  }
-  
   .category-badge {
     @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+  }
+}
+
+@layer utilities {
+  .blog-content {
+    @apply max-w-none;
   }
 }

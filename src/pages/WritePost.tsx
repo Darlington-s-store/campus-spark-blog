@@ -1,248 +1,308 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { ImagePlus, Save, Send } from 'lucide-react';
-
-const postSchema = z.object({
-  title: z.string().min(5, { message: 'Title must be at least 5 characters' }),
-  excerpt: z.string().min(20, { message: 'Excerpt must be at least 20 characters' }),
-  content: z.string().min(50, { message: 'Content must be at least 50 characters' }),
-  category: z.string().min(1, { message: 'Please select a category' }),
-  tags: z.string(),
-  coverImage: z.string().optional(),
-});
-
-type PostFormValues = z.infer<typeof postSchema>;
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { categories } from '@/data/mockData';
+import { Image, X, Clock, Tag } from 'lucide-react';
 
 const WritePost = () => {
-  const navigate = useNavigate();
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [excerpt, setExcerpt] = useState('');
+  const [category, setCategory] = useState('');
+  const [tags, setTags] = useState<string[]>([]);
+  const [currentTag, setCurrentTag] = useState('');
+  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [readTime, setReadTime] = useState(5);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
-
-  const form = useForm<PostFormValues>({
-    resolver: zodResolver(postSchema),
-    defaultValues: {
-      title: '',
-      excerpt: '',
-      content: '',
-      category: '',
-      tags: '',
-      coverImage: '',
-    },
-  });
-
-  const onSubmit = async (data: PostFormValues) => {
-    setIsSubmitting(true);
-    try {
-      // Simulate API call to create post
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+  
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      setCoverImage(file);
       
-      // Process tags
-      const processedTags = data.tags
-        .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 0);
-      
-      const finalData = {
-        ...data,
-        tags: processedTags,
-        slug: data.title.toLowerCase().replace(/\s+/g, '-'),
+      // Create preview URL
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
       };
-      
-      console.log('Post submitted:', finalData);
-      toast.success('Post published successfully!');
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  const removeImage = () => {
+    setCoverImage(null);
+    setPreviewUrl(null);
+  };
+  
+  const addTag = () => {
+    if (currentTag.trim() && !tags.includes(currentTag.trim())) {
+      setTags([...tags, currentTag.trim()]);
+      setCurrentTag('');
+    }
+  };
+  
+  const removeTag = (tagToRemove: string) => {
+    setTags(tags.filter(tag => tag !== tagToRemove));
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && currentTag.trim()) {
+      e.preventDefault();
+      addTag();
+    }
+  };
+  
+  const calculateReadTime = (text: string) => {
+    // Average reading speed: 200-250 words per minute
+    const wordCount = text.trim().split(/\s+/).length;
+    const readTimeMinutes = Math.max(1, Math.ceil(wordCount / 225));
+    return readTimeMinutes;
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!title || !content || !category) {
+      toast({
+        title: "Error",
+        description: "Please fill in all required fields",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Update read time based on content length
+    const calculatedReadTime = calculateReadTime(content);
+    setReadTime(calculatedReadTime);
+    
+    // Simulate API call
+    setTimeout(() => {
+      toast({
+        title: "Post submitted",
+        description: "Your post has been submitted successfully",
+      });
       navigate('/');
-    } catch (error) {
-      console.error('Failed to publish post:', error);
-      toast.error('Failed to publish post. Please try again.');
-    } finally {
       setIsSubmitting(false);
-    }
+    }, 1500);
   };
-
-  const handleSaveDraft = async () => {
-    const values = form.getValues();
-    setIsSaving(true);
-    try {
-      // Simulate API call to save draft
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log('Draft saved:', values);
-      toast.success('Draft saved successfully!');
-    } catch (error) {
-      console.error('Failed to save draft:', error);
-      toast.error('Failed to save draft. Please try again.');
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-grow py-8">
+      <main className="flex-grow py-8 bg-gray-50">
         <div className="campus-container">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-3xl font-bold mb-8">Create New Post</h1>
             
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Title</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="Enter an engaging title for your post" 
-                          className="text-lg"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Post Details</CardTitle>
+                  <CardDescription>
+                    Fill in the details for your new post
+                  </CardDescription>
+                </CardHeader>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Category</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select a category" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            <SelectItem value="arts">Arts & Design</SelectItem>
-                            <SelectItem value="science">Science</SelectItem>
-                            <SelectItem value="humanities">Humanities</SelectItem>
-                            <SelectItem value="technology">Technology</SelectItem>
-                            <SelectItem value="business">Business</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <CardContent className="space-y-6">
+                  {/* Title */}
+                  <div className="space-y-2">
+                    <Label htmlFor="title" className="text-base">Title*</Label>
+                    <Input 
+                      id="title"
+                      placeholder="Enter a descriptive title"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="text-lg"
+                    />
+                  </div>
                   
-                  <FormField
-                    control={form.control}
-                    name="tags"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tags (comma separated)</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="research, campus, education" 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                  {/* Excerpt */}
+                  <div className="space-y-2">
+                    <Label htmlFor="excerpt" className="text-base">Excerpt*</Label>
+                    <Textarea 
+                      id="excerpt"
+                      placeholder="Write a brief summary of your post (50-150 characters)"
+                      value={excerpt}
+                      onChange={(e) => setExcerpt(e.target.value)}
+                      className="resize-none"
+                      rows={2}
+                    />
+                    <p className="text-xs text-gray-500">
+                      {excerpt.length}/150 characters
+                    </p>
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="space-y-2">
+                    <Label htmlFor="content" className="text-base">Content*</Label>
+                    <Textarea 
+                      id="content"
+                      placeholder="Write your post content here..."
+                      value={content}
+                      onChange={(e) => {
+                        setContent(e.target.value);
+                        const calculatedReadTime = calculateReadTime(e.target.value);
+                        setReadTime(calculatedReadTime);
+                      }}
+                      className="min-h-[300px]"
+                    />
+                    <div className="flex items-center text-sm text-gray-500">
+                      <Clock className="h-4 w-4 mr-1" />
+                      <span>Estimated read time: {readTime} min</span>
+                    </div>
+                  </div>
+                  
+                  {/* Category */}
+                  <div className="space-y-2">
+                    <Label htmlFor="category" className="text-base">Category*</Label>
+                    <Select value={category} onValueChange={setCategory}>
+                      <SelectTrigger id="category">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.slug}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  {/* Tags */}
+                  <div className="space-y-2">
+                    <Label className="text-base">Tags</Label>
+                    <div className="flex items-center">
+                      <Input 
+                        placeholder="Add a tag and press Enter"
+                        value={currentTag}
+                        onChange={(e) => setCurrentTag(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        className="flex-grow"
+                      />
+                      <Button 
+                        type="button"
+                        onClick={addTag}
+                        className="ml-2"
+                        variant="outline"
+                      >
+                        Add
+                      </Button>
+                    </div>
+                    {tags.length > 0 && (
+                      <div className="flex flex-wrap gap-2 mt-3">
+                        {tags.map((tag) => (
+                          <div
+                            key={tag}
+                            className="flex items-center bg-gray-100 text-gray-800 px-3 py-1 rounded-full"
+                          >
+                            <Tag className="h-3 w-3 mr-1" />
+                            {tag}
+                            <button
+                              type="button"
+                              onClick={() => removeTag(tag)}
+                              className="ml-2 text-gray-500 hover:text-gray-700"
+                            >
+                              <X className="h-3 w-3" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                     )}
-                  />
-                </div>
-                
-                <FormField
-                  control={form.control}
-                  name="excerpt"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Excerpt</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Write a brief summary of your post (will appear in previews)" 
-                          className="resize-none h-20"
-                          {...field} 
+                  </div>
+                  
+                  {/* Cover Image */}
+                  <div className="space-y-2">
+                    <Label className="text-base">Cover Image</Label>
+                    {!previewUrl ? (
+                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                        <Image className="h-12 w-12 mx-auto text-gray-400 mb-2" />
+                        <p className="text-sm text-gray-500 mb-2">
+                          Drop your image here, or click to browse
+                        </p>
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageChange}
+                          className="hidden"
+                          id="cover-image"
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="coverImage"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Cover Image URL</FormLabel>
-                      <div className="flex items-center gap-2">
-                        <FormControl>
-                          <Input 
-                            placeholder="https://example.com/your-image.jpg" 
-                            {...field} 
-                          />
-                        </FormControl>
-                        <Button type="button" variant="outline" size="icon">
-                          <ImagePlus className="h-4 w-4" />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => document.getElementById('cover-image')?.click()}
+                        >
+                          Upload Image
                         </Button>
                       </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <Separator />
-                
-                <FormField
-                  control={form.control}
-                  name="content"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Content</FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Write your post content here..." 
-                          className="min-h-[300px] resize-y"
-                          {...field} 
+                    ) : (
+                      <div className="relative">
+                        <img
+                          src={previewUrl}
+                          alt="Cover preview"
+                          className="rounded-lg object-cover w-full h-[200px]"
                         />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-2 right-2"
+                          onClick={removeImage}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
                 
-                <div className="flex justify-end gap-4 pt-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={handleSaveDraft}
-                    disabled={isSaving}
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    {isSaving ? 'Saving...' : 'Save Draft'}
-                  </Button>
-                  
+                <CardFooter className="flex justify-between">
                   <Button 
-                    type="submit" 
-                    className="bg-campus-primary hover:bg-campus-dark-blue"
-                    disabled={isSubmitting}
+                    type="button" 
+                    variant="outline"
+                    onClick={() => navigate(-1)}
                   >
-                    <Send className="w-4 h-4 mr-2" />
-                    {isSubmitting ? 'Publishing...' : 'Publish Post'}
+                    Cancel
                   </Button>
-                </div>
-              </form>
-            </Form>
+                  <div className="flex space-x-2">
+                    <Button 
+                      type="button" 
+                      variant="outline"
+                      onClick={() => {
+                        toast({
+                          title: "Draft saved",
+                          description: "Your post has been saved as a draft",
+                        });
+                      }}
+                    >
+                      Save as Draft
+                    </Button>
+                    <Button 
+                      type="submit"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? "Publishing..." : "Publish Post"}
+                    </Button>
+                  </div>
+                </CardFooter>
+              </Card>
+            </form>
           </div>
         </div>
       </main>
