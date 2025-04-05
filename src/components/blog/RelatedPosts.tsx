@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Post } from '@/types/blog';
 import { getAllPosts } from '@/data/mockData';
@@ -11,29 +11,44 @@ interface RelatedPostsProps {
 }
 
 const RelatedPosts: React.FC<RelatedPostsProps> = ({ currentPost, limit = 3 }) => {
-  const allPosts = getAllPosts();
+  const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
   
-  // Get posts with the same category, excluding the current post
-  const sameCategoryPosts = allPosts.filter(post => 
-    post.category.slug === currentPost.category.slug && post.id !== currentPost.id
-  );
-  
-  // If we don't have enough posts in the same category, add some recent posts
-  let relatedPosts = [...sameCategoryPosts];
-  
-  if (relatedPosts.length < limit) {
-    const recentPosts = allPosts
-      .filter(post => post.id !== currentPost.id && !sameCategoryPosts.includes(post))
-      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-      .slice(0, limit - relatedPosts.length);
+  useEffect(() => {
+    const fetchRelatedPosts = async () => {
+      try {
+        const allPosts = await getAllPosts();
+        
+        // Get posts with the same category, excluding the current post
+        const sameCategoryPosts = allPosts.filter(post => 
+          post.category.slug === currentPost.category.slug && post.id !== currentPost.id
+        );
+        
+        // If we don't have enough posts in the same category, add some recent posts
+        let postsToShow = [...sameCategoryPosts];
+        
+        if (postsToShow.length < limit) {
+          const recentPosts = allPosts
+            .filter(post => post.id !== currentPost.id && !sameCategoryPosts.includes(post))
+            .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+            .slice(0, limit - postsToShow.length);
+          
+          postsToShow = [...postsToShow, ...recentPosts];
+        } else {
+          // If we have more than enough, take only the most recent ones
+          postsToShow = postsToShow
+            .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+            .slice(0, limit);
+        }
+        
+        setRelatedPosts(postsToShow);
+      } catch (error) {
+        console.error("Error fetching related posts:", error);
+        setRelatedPosts([]);
+      }
+    };
     
-    relatedPosts = [...relatedPosts, ...recentPosts];
-  } else {
-    // If we have more than enough, take only the most recent ones
-    relatedPosts = relatedPosts
-      .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-      .slice(0, limit);
-  }
+    fetchRelatedPosts();
+  }, [currentPost, limit]);
   
   if (relatedPosts.length === 0) {
     return null;

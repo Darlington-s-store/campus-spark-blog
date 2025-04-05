@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -10,19 +10,37 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { categories, getAllPosts } from '@/data/mockData';
 import { Filter, Search, SlidersHorizontal } from 'lucide-react';
+import { Post } from '@/types/blog';
 
 const Blog = () => {
-  const allPosts = getAllPosts();
+  const [posts, setPosts] = useState<Post[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [sortBy, setSortBy] = useState('newest');
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const allPosts = await getAllPosts();
+        setPosts(allPosts);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchPosts();
+  }, []);
   
   // Filter posts based on search query and category
-  const filteredPosts = allPosts.filter(post => {
+  const filteredPosts = posts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || post.category.slug === selectedCategory;
-    return matchesSearch && matchesCategory;
+    const isPublished = post.status === 'published';
+    return matchesSearch && matchesCategory && isPublished;
   });
   
   // Sort posts
@@ -107,7 +125,7 @@ const Blog = () => {
             <Tabs defaultValue="grid" className="w-full">
               <div className="flex justify-between items-center">
                 <div className="text-sm text-gray-500">
-                  {sortedPosts.length} {sortedPosts.length === 1 ? 'article' : 'articles'} found
+                  {loading ? "Loading..." : `${sortedPosts.length} ${sortedPosts.length === 1 ? 'article' : 'articles'} found`}
                 </div>
                 <TabsList>
                   <TabsTrigger value="grid">Grid View</TabsTrigger>

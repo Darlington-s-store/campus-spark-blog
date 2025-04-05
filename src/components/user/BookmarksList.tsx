@@ -16,11 +16,21 @@ const BookmarksList = () => {
     loadBookmarks();
   }, []);
   
-  const loadBookmarks = () => {
-    const bookmarkIds = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-    const allPosts = getAllPosts();
-    const posts = allPosts.filter(post => bookmarkIds.includes(post.id));
-    setBookmarkedPosts(posts);
+  const loadBookmarks = async () => {
+    try {
+      const bookmarkIds = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+      const allPosts = await getAllPosts();
+      const posts = allPosts.filter(post => bookmarkIds.includes(post.id));
+      setBookmarkedPosts(posts);
+    } catch (error) {
+      console.error("Error loading bookmarks:", error);
+      setBookmarkedPosts([]);
+      toast({
+        title: "Error",
+        description: "Failed to load bookmarks",
+        variant: "destructive"
+      });
+    }
   };
   
   const removeBookmark = (postId: string, postTitle: string) => {

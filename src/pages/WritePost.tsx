@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -10,6 +11,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Image, X, Clock, Tag } from 'lucide-react';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
 
 const WritePost = () => {
   const [title, setTitle] = useState('');
@@ -18,7 +21,7 @@ const WritePost = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState('');
-  const [featuredImage, setFeaturedImage] = useState<File | null>(null);
+  const [featuredImage, setFeaturedImage] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [readTime, setReadTime] = useState(5);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -34,12 +37,13 @@ const WritePost = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setFeaturedImage(file);
       
       // Create preview URL
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
+        const result = reader.result as string;
+        setPreviewUrl(result);
+        setFeaturedImage(result); // Store the data URL
       };
       reader.readAsDataURL(file);
     }
@@ -88,8 +92,9 @@ const WritePost = () => {
     }
     
     try {
+      setIsSubmitting(true);
       // Find the full category object
-      const category = categories.find(cat => cat.id === selectedCategory);
+      const category = categories.find(cat => cat.slug === selectedCategory);
       
       if (!category) {
         throw new Error('Invalid category');
@@ -105,15 +110,14 @@ const WritePost = () => {
       await createPost({
         title,
         slug,
-        excerpt: content.substring(0, 150) + '...',
+        excerpt: excerpt || content.substring(0, 150) + '...',
         content,
-        coverImage: featuredImage,
+        coverImage: featuredImage || '/placeholder.svg',
         author: user!,
         category,
         tags: tags,
-        readTime: Math.ceil(content.split(' ').length / 200), // Rough estimate of reading time
-        updatedAt: new Date().toISOString(),
-        featured: false
+        readTime: calculateReadTime(content),
+        status: 'pending'
       });
       
       toast({
@@ -129,6 +133,8 @@ const WritePost = () => {
         description: 'Failed to create post. Please try again.',
         variant: 'destructive',
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
   
