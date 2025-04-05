@@ -1,3 +1,4 @@
+
 export interface Author {
   id: string;
   name: string;
@@ -20,6 +21,7 @@ export interface Comment {
   author: Author;
   content: string;
   createdAt: string;
+  replies?: Comment[]; // Adding this back to fix errors in PostDetail.tsx
 }
 
 export interface Post {
@@ -33,6 +35,8 @@ export interface Post {
   category: Category;
   tags: string[];
   publishedAt: string;
+  updatedAt?: string; // Adding this back to fix errors
+  featured?: boolean; // Adding this back to fix errors in getFeaturedPosts
   comments: Comment[];
   likes: number;
   views: number;

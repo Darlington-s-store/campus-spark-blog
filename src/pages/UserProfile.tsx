@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getUserById, getAllPosts } from '@/data/mockData';
@@ -50,6 +51,11 @@ const UserProfile = () => {
   const pendingPosts = userPosts.filter(post => post.status === 'pending');
   const draftPosts = userPosts.filter(post => post.status === 'draft');
   const rejectedPosts = userPosts.filter(post => post.status === 'rejected');
+  
+  // Format date helper function
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString();
+  };
   
   return (
     <div className="container mx-auto py-8">
@@ -124,7 +130,7 @@ const UserProfile = () => {
                     <CardHeader>
                       <CardTitle className="line-clamp-2">{post.title}</CardTitle>
                       <CardDescription>
-                        Submitted on {new Date(post.publishedAt).toLocaleDateString()}
+                        Submitted on {formatDate(post.publishedAt)}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -161,7 +167,7 @@ const UserProfile = () => {
                     <CardHeader>
                       <CardTitle className="line-clamp-2">{post.title}</CardTitle>
                       <CardDescription>
-                        Last updated on {new Date(post.updatedAt || post.publishedAt).toLocaleDateString()}
+                        Last updated on {formatDate(post.updatedAt || post.publishedAt)}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>

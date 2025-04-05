@@ -17,72 +17,92 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Check, X, Eye, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { toast } from 'sonner';
 
 const Admin = () => {
-  const { user, requireAuth } = useAuth();
+  const { user, isAdmin } = useAuth();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!requireAuth('/login')) {
-      return;
-    }
+    const checkAccess = async () => {
+      setLoading(true);
+      
+      // Check if user is logged in
+      if (!user) {
+        toast.error('Please login to access this page');
+        navigate('/login');
+        return;
+      }
 
-    if (user?.role !== 'admin') {
-      toast({
-        title: 'Access Denied',
-        description: 'Only administrators can access this page.',
-        variant: 'destructive',
-      });
-      navigate('/');
-      return;
-    }
+      // Check if user is an admin
+      if (!isAdmin()) {
+        uiToast({
+          title: 'Access Denied',
+          description: 'Only administrators can access this page.',
+          variant: 'destructive',
+        });
+        toast.error('Only administrators can access this page');
+        navigate('/');
+        return;
+      }
 
-    const fetchPosts = async () => {
-      const allPosts = await getAllPosts();
-      setPosts(allPosts);
+      try {
+        const allPosts = await getAllPosts();
+        setPosts(allPosts);
+      } catch (error) {
+        console.error('Error fetching posts:', error);
+        toast.error('Failed to load posts');
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchPosts();
-  }, [user, navigate, requireAuth, toast]);
+    checkAccess();
+  }, [user, isAdmin, navigate, uiToast]);
 
   const handleApprovePost = async (post: Post) => {
     try {
       const updatedPost = await updatePostStatus(post.id, 'published');
-      toast({
+      uiToast({
         title: 'Post Approved',
         description: `"${post.title}" has been published successfully.`,
       });
+      toast.success(`"${post.title}" has been published successfully`);
       
       setPosts(posts.map(p => p.id === post.id ? updatedPost : p));
     } catch (error) {
-      toast({
+      uiToast({
         title: 'Error',
         description: 'Failed to approve post.',
         variant: 'destructive',
       });
+      toast.error('Failed to approve post');
     }
   };
 
   const handleRejectPost = async (post: Post) => {
     try {
       const updatedPost = await updatePostStatus(post.id, 'rejected');
-      toast({
+      uiToast({
         title: 'Post Rejected',
         description: `"${post.title}" has been rejected.`,
       });
+      toast.error(`"${post.title}" has been rejected`);
       
       setPosts(posts.map(p => p.id === post.id ? updatedPost : p));
     } catch (error) {
-      toast({
+      uiToast({
         title: 'Error',
         description: 'Failed to reject post.',
         variant: 'destructive',
       });
+      toast.error('Failed to reject post');
     }
   };
 
@@ -90,16 +110,18 @@ const Admin = () => {
     try {
       // In a real app, this would call an API to delete the post
       setPosts(posts.filter(p => p.id !== post.id));
-      toast({
+      uiToast({
         title: 'Post Deleted',
         description: `"${post.title}" has been deleted.`,
       });
+      toast.success(`"${post.title}" has been deleted`);
     } catch (error) {
-      toast({
+      uiToast({
         title: 'Error',
         description: 'Failed to delete post.',
         variant: 'destructive',
       });
+      toast.error('Failed to delete post');
     }
   };
 
@@ -121,6 +143,14 @@ const Admin = () => {
       default: return 'bg-gray-500';
     }
   };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto py-8 text-center">
+        <p>Loading admin dashboard...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-8">

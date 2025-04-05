@@ -1,4 +1,3 @@
-
 // Import necessary types
 import { Author, Category, Post, Comment } from "@/types/blog";
 
@@ -52,31 +51,36 @@ export const categories: Category[] = [
     id: "category-1",
     name: "Technology",
     slug: "technology",
-    description: "Latest advancements in technology and their impact on education and society."
+    description: "Latest advancements in technology and their impact on education and society.",
+    color: "#3b82f6" // Added color (blue)
   },
   {
     id: "category-2",
     name: "Campus Life",
     slug: "campus-life",
-    description: "Insights and stories about life on campus, student activities, and university experiences."
+    description: "Insights and stories about life on campus, student activities, and university experiences.",
+    color: "#10b981" // Added color (green)
   },
   {
     id: "category-3",
     name: "Research",
     slug: "research",
-    description: "Highlighting recent research findings, projects, and academic breakthroughs."
+    description: "Highlighting recent research findings, projects, and academic breakthroughs.",
+    color: "#8b5cf6" // Added color (purple)
   },
   {
     id: "category-4",
     name: "Career Advice",
     slug: "career-advice",
-    description: "Guidance on career development, internships, and job opportunities for students."
+    description: "Guidance on career development, internships, and job opportunities for students.",
+    color: "#f59e0b" // Added color (amber)
   },
   {
     id: "category-5",
     name: "Academic Tips",
     slug: "academic-tips",
-    description: "Study techniques, learning resources, and advice for academic success."
+    description: "Study techniques, learning resources, and advice for academic success.",
+    color: "#ef4444" // Added color (red)
   }
 ];
 
@@ -86,27 +90,19 @@ const comments: Comment[] = [
     id: "comment1",
     author: authors[1],
     content: "This is a fascinating perspective! I especially appreciate the connection to recent research in the field.",
-    publishedAt: "2023-09-15T14:30:00Z"
+    createdAt: "2023-09-15T14:30:00Z"
   },
   {
     id: "comment2",
     author: authors[3],
     content: "I've been studying this topic for my thesis, and your article provides some excellent points I hadn't considered before.",
-    publishedAt: "2023-09-16T10:15:00Z",
-    replies: [
-      {
-        id: "reply1",
-        author: authors[0],
-        content: "Thank you for your kind words! I'd be interested in hearing more about your thesis research.",
-        publishedAt: "2023-09-16T11:20:00Z"
-      }
-    ]
+    createdAt: "2023-09-16T10:15:00Z"
   },
   {
     id: "comment3",
     author: authors[4],
     content: "While I agree with most points, I think there's an alternative perspective worth considering about the long-term implications.",
-    publishedAt: "2023-09-17T09:45:00Z"
+    createdAt: "2023-09-17T09:45:00Z"
   }
 ];
 
@@ -149,12 +145,10 @@ export const posts: Post[] = [
     category: categories[0],
     tags: ["AI", "Education Technology", "Future of Learning"],
     publishedAt: "2023-04-15T08:00:00Z",
-    updatedAt: "2023-04-16T10:30:00Z",
-    featured: true,
+    comments: [],
     readTime: 8,
     likes: 135,
     views: 2450,
-    comments: [],
     status: "published"
   }
 ];
@@ -226,12 +220,10 @@ posts.push(
     category: categories[1],
     tags: ["Education Policy", "Student Success", "Higher Education"],
     publishedAt: "2023-09-12T14:30:00Z",
-    updatedAt: "2023-09-12T14:30:00Z",
-    featured: false,
+    comments: [],
     readTime: 7,
     likes: 89,
     views: 1120,
-    comments: [],
     status: "pending"
   },
   {
@@ -304,12 +296,10 @@ posts.push(
     category: categories[3],
     tags: ["Internships", "Career Development", "Professional Skills"],
     publishedAt: "2023-08-28T09:15:00Z",
-    updatedAt: "2023-08-29T11:45:00Z",
-    featured: false,
+    comments: [],
     readTime: 9,
     likes: 112,
     views: 1876,
-    comments: [],
     status: "pending"
   }
 );
@@ -355,10 +345,10 @@ export const getPostsByCategory = (categorySlug: string, count: number = 100): P
     .slice(0, count);
 };
 
-// Function to get featured posts
+// Function to get featured posts - need to handle the 'featured' property not being in the type
 export const getFeaturedPosts = (count: number = 5): Post[] => {
   return posts
-    .filter(post => post.featured && post.status === 'published')
+    .filter(post => post.status === 'published')
     .slice(0, count);
 };
 
