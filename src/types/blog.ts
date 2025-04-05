@@ -1,4 +1,3 @@
-
 export interface Author {
   id: string;
   name: string;
@@ -12,15 +11,15 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-  description?: string;
+  description: string;
+  color: string;
 }
 
 export interface Comment {
   id: string;
   author: Author;
   content: string;
-  publishedAt: string;
-  replies?: Comment[];
+  createdAt: string;
 }
 
 export interface Post {
@@ -29,16 +28,14 @@ export interface Post {
   slug: string;
   excerpt: string;
   content: string;
-  coverImage?: string;
+  coverImage: string | null;
   author: Author;
   category: Category;
   tags: string[];
   publishedAt: string;
-  updatedAt?: string;
-  featured?: boolean;
-  readTime: number;
+  comments: Comment[];
   likes: number;
   views: number;
-  comments: Comment[];
+  readTime: number;
   status: 'draft' | 'pending' | 'published' | 'rejected';
 }
