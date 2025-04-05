@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Post } from '@/types/blog';
 import { Clock, ThumbsUp, MessageSquare } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { categories } from '@/data/mockData';
 
 interface PostCardProps {
   post: Post;
@@ -12,6 +13,7 @@ interface PostCardProps {
 
 const PostCard: React.FC<PostCardProps> = ({ post, isFeatured = false }) => {
   const formattedDate = formatDistanceToNow(new Date(post.publishedAt), { addSuffix: true });
+  const categoryName = categories.find(c => c.slug === post.category)?.name || post.category;
   
   // Regular card styling
   let cardClasses = "group bg-white rounded-lg overflow-hidden border shadow-sm hover:shadow-md transition-shadow";
@@ -32,9 +34,9 @@ const PostCard: React.FC<PostCardProps> = ({ post, isFeatured = false }) => {
           />
           <div className="absolute top-4 left-4">
             <span 
-              className={`category-badge bg-category-${post.category.slug}`}
+              className={`category-badge bg-category-${post.category}/10 text-category-${post.category}`}
             >
-              {post.category.name}
+              {categoryName}
             </span>
             {isFeatured && (
               <span className="ml-2 category-badge bg-campus-primary text-white">

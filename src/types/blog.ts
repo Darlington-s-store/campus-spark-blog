@@ -31,12 +31,13 @@ export interface Post {
   content: string;
   coverImage?: string;
   author: Author;
-  category: Category;
+  category: string;
   tags: string[];
   publishedAt: string;
   updatedAt?: string;
   featured?: boolean;
   readTime: number;
   likes: number;
+  views: number;
   comments: Comment[];
 }

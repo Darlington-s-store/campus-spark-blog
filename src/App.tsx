@@ -16,6 +16,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import WritePost from "./pages/WritePost";
 import UserProfile from "./pages/UserProfile";
+import Bookmarks from "./pages/Bookmarks";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
             <Route path="/register" element={<Register />} />
             <Route path="/write" element={<WritePost />} />
             <Route path="/user/:userId" element={<UserProfile />} />
+            <Route path="/bookmarks" element={<Bookmarks />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

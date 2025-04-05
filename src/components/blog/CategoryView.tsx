@@ -28,6 +28,9 @@ const getCategoryIcon = (slug: string) => {
 };
 
 const CategoryView: React.FC<CategoryViewProps> = ({ category, posts }) => {
+  // Filter posts by category
+  const categoryPosts = posts.filter(post => post.category === category.slug);
+  
   return (
     <div className="space-y-8">
       <div className={`flex items-center gap-4 bg-category-${category.slug}/10 p-6 rounded-lg border border-category-${category.slug}/20`}>
@@ -41,9 +44,9 @@ const CategoryView: React.FC<CategoryViewProps> = ({ category, posts }) => {
         </div>
       </div>
       
-      {posts.length > 0 ? (
+      {categoryPosts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {posts.map((post) => (
+          {categoryPosts.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}
         </div>
