@@ -1,3 +1,4 @@
+
 import { Post, Author, Category } from "@/types/blog";
 
 export const categories: Category[] = [
@@ -409,6 +410,6 @@ export const getUserById = (userId: string): Author | undefined => {
   return authors.find(author => author.id === userId);
 };
 
-export const getAllPosts = () => {
+export const getAllPosts = (): Post[] => {
   return posts;
 };
