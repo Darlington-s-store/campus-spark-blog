@@ -1,4 +1,3 @@
-
 // Import necessary types
 import { Author, Category, Post, Comment } from "@/types/blog";
 
@@ -336,4 +335,9 @@ export const getRelatedPosts = (currentPostId: string, count: number = 3): Post[
     .filter(post => post.id !== currentPostId && post.category.slug === currentPost.category.slug)
     .sort(() => Math.random() - 0.5) // Shuffle for some randomness
     .slice(0, count);
+};
+
+// Add getUserById function
+export const getUserById = (userId: string): Author | undefined => {
+  return authors.find(author => author.id === userId);
 };
