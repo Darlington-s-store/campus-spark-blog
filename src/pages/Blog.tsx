@@ -21,7 +21,7 @@ const Blog = () => {
   const filteredPosts = allPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
+    const matchesCategory = selectedCategory === 'all' || post.category.slug === selectedCategory;
     return matchesSearch && matchesCategory;
   });
   
@@ -155,10 +155,10 @@ const Blog = () => {
                         <div className="md:w-3/4 flex flex-col justify-between">
                           <div>
                             <Link 
-                              to={`/category/${post.category}`}
-                              className={`category-badge bg-category-${post.category}/10 text-category-${post.category} mb-2`}
+                              to={`/category/${post.category.slug}`}
+                              className={`category-badge bg-category-${post.category.slug}/10 text-category-${post.category.slug} mb-2`}
                             >
-                              {categories.find(c => c.slug === post.category)?.name || post.category}
+                              {post.category.name}
                             </Link>
                             <Link to={`/post/${post.slug}`}>
                               <h3 className="text-xl font-bold mb-2 hover:text-campus-primary">{post.title}</h3>
