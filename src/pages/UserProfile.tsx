@@ -1,203 +1,227 @@
-
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import PostCard from '@/components/blog/PostCard';
-import { getUserById, getRecentPosts } from '@/data/mockData';
+import React, { useState, useEffect } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { getUserById, getAllPosts } from '@/data/mockData';
 import { Post } from '@/types/blog';
-import { BookOpen, Bookmark, Users, MessageSquare, Settings } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import PostCard from '@/components/blog/PostCard';
 
 const UserProfile = () => {
   const { userId } = useParams<{ userId: string }>();
-  const user = getUserById(userId || '');
+  const [user, setUser] = useState(null);
+  const [userPosts, setUserPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('published');
   
-  // Since getPostsByAuthor doesn't exist, we'll use getRecentPosts as a fallback
-  // In a real application, we would filter posts by author ID
-  const userPosts = getRecentPosts(4);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (!userId) return;
+        
+        const userData = getUserById(userId);
+        if (userData) {
+          setUser(userData);
+          
+          // Fetch all posts to filter by author and status
+          const allPosts = await getAllPosts();
+          setUserPosts(allPosts.filter(post => post.author.id === userId));
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchUserData();
+  }, [userId]);
   
-  if (!user) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4">User Not Found</h1>
-            <p className="mb-6">The user profile you're looking for doesn't exist.</p>
-            <Button asChild variant="default">
-              <a href="/">Return to Home</a>
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
+  if (loading) {
+    return <div className="container mx-auto py-8">Loading user profile...</div>;
   }
   
+  if (!user) {
+    return <div className="container mx-auto py-8">User not found</div>;
+  }
+  
+  // Filter posts by status
+  const publishedPosts = userPosts.filter(post => post.status === 'published');
+  const pendingPosts = userPosts.filter(post => post.status === 'pending');
+  const draftPosts = userPosts.filter(post => post.status === 'draft');
+  const rejectedPosts = userPosts.filter(post => post.status === 'rejected');
+  
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow py-8">
-        <div className="campus-container">
-          {/* Profile Header */}
-          <div className="mb-10">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <img 
-                src={user.avatar} 
-                alt={user.name}
-                className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-md"
-              />
-              
-              <div className="flex-grow">
-                <h1 className="text-3xl font-bold mb-1">{user.name}</h1>
-                <p className="text-gray-600 mb-3">
-                  {user.role === 'educator' ? 'Professor' : 'Student'} 
-                  {user.department && ` • ${user.department}`}
-                </p>
-                
-                <p className="max-w-2xl mb-4">{user.bio || 'No bio available.'}</p>
-                
-                <div className="flex flex-wrap gap-4">
-                  <div className="flex items-center text-gray-700">
-                    <BookOpen className="w-4 h-4 mr-2" />
-                    <span>12 Posts</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <Bookmark className="w-4 h-4 mr-2" />
-                    <span>23 Bookmarks</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <Users className="w-4 h-4 mr-2" />
-                    <span>48 Followers</span>
-                  </div>
-                  <div className="flex items-center text-gray-700">
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    <span>156 Comments</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="flex gap-3">
-                <Button>Follow</Button>
-                <Button variant="outline" size="icon">
-                  <Settings className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
+    <div className="container mx-auto py-8">
+      {/* User profile header */}
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
+        <img 
+          src={user.avatar} 
+          alt={user.name} 
+          className="rounded-full w-32 h-32 object-cover" 
+        />
+        <div className="flex-1">
+          <h1 className="text-3xl font-bold">{user.name}</h1>
+          <div className="flex flex-wrap gap-2 my-2">
+            <Badge variant="outline" className="capitalize">{user.role}</Badge>
+            {user.department && (
+              <Badge variant="secondary" className="capitalize">{user.department}</Badge>
+            )}
           </div>
+          <p className="text-muted-foreground mt-2">{user.bio || "No bio available"}</p>
+        </div>
+      </div>
+      
+      {/* User's posts section */}
+      <div className="mt-8">
+        <Tabs defaultValue="published" onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-4 mb-6">
+            <TabsTrigger value="published">
+              Published 
+              <Badge className="ml-2 bg-green-500">{publishedPosts.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="pending">
+              Pending 
+              <Badge className="ml-2 bg-yellow-500">{pendingPosts.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="draft">
+              Drafts 
+              <Badge className="ml-2 bg-gray-500">{draftPosts.length}</Badge>
+            </TabsTrigger>
+            <TabsTrigger value="rejected">
+              Rejected 
+              <Badge className="ml-2 bg-red-500">{rejectedPosts.length}</Badge>
+            </TabsTrigger>
+          </TabsList>
           
-          {/* Tabs */}
-          <Tabs defaultValue="posts" className="mb-10">
-            <TabsList className="border-b w-full rounded-none justify-start mb-6 bg-transparent">
-              <TabsTrigger value="posts" className="text-base">Posts</TabsTrigger>
-              <TabsTrigger value="bookmarks" className="text-base">Bookmarks</TabsTrigger>
-              <TabsTrigger value="comments" className="text-base">Comments</TabsTrigger>
-              <TabsTrigger value="about" className="text-base">About</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="posts">
+          <TabsContent value="published">
+            {publishedPosts.length === 0 ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <p className="text-center text-muted-foreground">No published posts yet</p>
+                </CardContent>
+              </Card>
+            ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {userPosts.map((post: Post) => (
+                {publishedPosts.map(post => (
                   <PostCard key={post.id} post={post} />
                 ))}
               </div>
-            </TabsContent>
-            
-            <TabsContent value="bookmarks">
-              <div className="bg-gray-50 rounded-lg p-10 text-center">
-                <h3 className="text-xl font-medium mb-2">No Bookmarks Yet</h3>
-                <p className="text-gray-500 mb-4">Bookmark posts to save them for later reading.</p>
-                <Button>Explore Posts</Button>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="pending">
+            {pendingPosts.length === 0 ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <p className="text-center text-muted-foreground">No pending posts</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {pendingPosts.map(post => (
+                  <Card key={post.id}>
+                    <CardHeader>
+                      <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                      <CardDescription>
+                        Submitted on {new Date(post.publishedAt).toLocaleDateString()}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="line-clamp-3 text-muted-foreground">{post.excerpt}</p>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="flex justify-between w-full items-center">
+                        <Badge className="bg-yellow-500">Pending Review</Badge>
+                        <Link 
+                          to={`/post/${post.slug}`} 
+                          className="text-sm font-medium text-primary hover:underline"
+                        >
+                          Preview
+                        </Link>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
               </div>
-            </TabsContent>
-            
-            <TabsContent value="comments">
-              <div className="space-y-4">
-                <div className="bg-white p-4 rounded-lg border">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <a href="#" className="font-medium hover:text-campus-primary">On "The Future of AI in Education"</a>
-                      <p className="text-xs text-gray-500">April 2, 2025</p>
-                    </div>
-                  </div>
-                  <p>This is a great analysis of how AI is transforming the classroom experience. I've seen similar trends in my department.</p>
-                </div>
-                
-                <div className="bg-white p-4 rounded-lg border">
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <a href="#" className="font-medium hover:text-campus-primary">On "Research Methods in Digital Humanities"</a>
-                      <p className="text-xs text-gray-500">March 28, 2025</p>
-                    </div>
-                  </div>
-                  <p>I would add that mixed methods approaches are becoming increasingly important in this field. Great post overall!</p>
-                </div>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="draft">
+            {draftPosts.length === 0 ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <p className="text-center text-muted-foreground">No draft posts</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {draftPosts.map(post => (
+                  <Card key={post.id}>
+                    <CardHeader>
+                      <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                      <CardDescription>
+                        Last updated on {new Date(post.updatedAt || post.publishedAt).toLocaleDateString()}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="line-clamp-3 text-muted-foreground">{post.excerpt}</p>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="flex justify-between w-full items-center">
+                        <Badge className="bg-gray-500">Draft</Badge>
+                        <Link 
+                          to={`/post/${post.slug}`} 
+                          className="text-sm font-medium text-primary hover:underline"
+                        >
+                          Edit
+                        </Link>
+                      </div>
+                    </CardFooter>
+                  </Card>
+                ))}
               </div>
-            </TabsContent>
-            
-            <TabsContent value="about">
-              <div className="max-w-3xl">
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">Bio</h3>
-                    <p className="text-gray-700">{user.bio || 'No bio available.'}</p>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">Academic Information</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-500">Department</p>
-                        <p className="font-medium">{user.department || 'Not specified'}</p>
+            )}
+          </TabsContent>
+          
+          <TabsContent value="rejected">
+            {rejectedPosts.length === 0 ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <p className="text-center text-muted-foreground">No rejected posts</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {rejectedPosts.map(post => (
+                  <Card key={post.id}>
+                    <CardHeader>
+                      <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+                      <CardDescription>
+                        Submitted on {new Date(post.publishedAt).toLocaleDateString()}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="line-clamp-3 text-muted-foreground">{post.excerpt}</p>
+                    </CardContent>
+                    <CardFooter>
+                      <div className="flex justify-between w-full items-center">
+                        <Badge className="bg-red-500">Rejected</Badge>
+                        <Link 
+                          to={`/post/${post.slug}`} 
+                          className="text-sm font-medium text-primary hover:underline"
+                        >
+                          View
+                        </Link>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Role</p>
-                        <p className="font-medium">{user.role === 'educator' ? 'Professor' : 'Student'}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Joined</p>
-                        <p className="font-medium">January 2024</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Research Interests</p>
-                        <p className="font-medium">Machine Learning, Digital Humanities</p>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Separator />
-                  
-                  <div>
-                    <h3 className="text-lg font-medium mb-2">Contact</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-500">Email</p>
-                        <p className="font-medium">user@university.edu</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Office</p>
-                        <p className="font-medium">Building A, Room 204</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Office Hours</p>
-                        <p className="font-medium">Tuesdays and Thursdays, 10-12pm</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                    </CardFooter>
+                  </Card>
+                ))}
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </main>
-      
-      <Footer />
+            )}
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 };

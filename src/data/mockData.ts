@@ -1,85 +1,85 @@
 // Import necessary types
 import { Author, Category, Post, Comment } from "@/types/blog";
 
-// Categories
+// Mock authors data
+export const authors: Author[] = [
+  {
+    id: "author-1",
+    name: "Daniel Lawrence",
+    avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80",
+    role: "educator",
+    department: "Computer Science",
+    bio: "Professor of Computer Science with 15 years of experience in software development and machine learning research."
+  },
+  {
+    id: "author-2",
+    name: "Samantha Chen",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
+    role: "student",
+    department: "Business",
+    bio: "MBA student focusing on entrepreneurship and digital marketing. Campus ambassador for several tech startups."
+  },
+  {
+    id: "author-3",
+    name: "Michael Johnson",
+    avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80",
+    role: "student",
+    department: "Engineering",
+    bio: "Engineering student passionate about renewable energy solutions and sustainable technology."
+  },
+  {
+    id: "author-4",
+    name: "Lisa Rodriguez",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1061&q=80",
+    role: "educator",
+    department: "Psychology",
+    bio: "Associate Professor of Psychology specializing in student mental health and academic performance."
+  },
+  {
+    id: "admin-1",
+    name: "Admin User",
+    avatar: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
+    role: "admin",
+    department: "Administration",
+    bio: "Campus administrator responsible for content management."
+  }
+];
+
+// Mock categories data
 export const categories: Category[] = [
   {
-    id: "1",
-    name: "Arts",
-    slug: "arts",
-    description: "Explore creative expressions and cultural performances"
-  },
-  {
-    id: "2",
-    name: "Science",
-    slug: "science",
-    description: "Discover the latest in scientific research and breakthroughs"
-  },
-  {
-    id: "3",
-    name: "Humanities",
-    slug: "humanities",
-    description: "Explore the human experience through literature, philosophy, and history"
-  },
-  {
-    id: "4",
+    id: "category-1",
     name: "Technology",
     slug: "technology",
-    description: "Stay updated with the latest tech trends and innovations"
+    description: "Latest advancements in technology and their impact on education and society."
   },
   {
-    id: "5",
-    name: "Business",
-    slug: "business",
-    description: "Insights into entrepreneurship, management, and economics"
+    id: "category-2",
+    name: "Campus Life",
+    slug: "campus-life",
+    description: "Insights and stories about life on campus, student activities, and university experiences."
+  },
+  {
+    id: "category-3",
+    name: "Research",
+    slug: "research",
+    description: "Highlighting recent research findings, projects, and academic breakthroughs."
+  },
+  {
+    id: "category-4",
+    name: "Career Advice",
+    slug: "career-advice",
+    description: "Guidance on career development, internships, and job opportunities for students."
+  },
+  {
+    id: "category-5",
+    name: "Academic Tips",
+    slug: "academic-tips",
+    description: "Study techniques, learning resources, and advice for academic success."
   }
 ];
 
-// Authors
-const authors: Author[] = [
-  {
-    id: "author1",
-    name: "Dr. Emma Wilson",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces",
-    role: "educator",
-    department: "Department of Computer Science",
-    bio: "Dr. Emma Wilson is a professor of Computer Science with expertise in AI and machine learning. She has published numerous papers on neural networks and their applications in education."
-  },
-  {
-    id: "author2",
-    name: "Michael Chen",
-    avatar: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop&crop=faces",
-    role: "student",
-    department: "Department of Physics",
-    bio: "Michael is a PhD candidate in Theoretical Physics, focusing on quantum mechanics and string theory. He is passionate about science communication and making complex topics accessible."
-  },
-  {
-    id: "author3",
-    name: "Prof. Sarah Johnson",
-    avatar: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=150&h=150&fit=crop&crop=faces",
-    role: "educator",
-    department: "Department of Literature",
-    bio: "Professor Johnson specializes in 20th century literature with a focus on feminist and postcolonial studies. She has authored three books on modern literary criticism."
-  },
-  {
-    id: "author4",
-    name: "James Rodriguez",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=faces",
-    role: "student",
-    department: "Department of Business",
-    bio: "James is an MBA student specializing in entrepreneurship and sustainable business practices. He has launched two successful startups before pursuing his graduate studies."
-  },
-  {
-    id: "author5",
-    name: "Dr. Alex Patel",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=faces",
-    role: "educator",
-    department: "Department of Environmental Science",
-    bio: "Dr. Patel's research focuses on climate change mitigation strategies and sustainable development. She has worked with international organizations on environmental policy."
-  }
-];
-
-// Sample comments
+// Mock comments
 const comments: Comment[] = [
   {
     id: "comment1",
@@ -109,235 +109,456 @@ const comments: Comment[] = [
   }
 ];
 
-// Blog posts data
-const posts: Post[] = [
+// Mock posts data
+export const posts: Post[] = [
   {
-    id: "post1",
-    title: "The Future of Artificial Intelligence in Education",
-    slug: "future-ai-education",
-    excerpt: "Exploring how AI technologies are transforming learning experiences and educational methodologies",
+    id: "post-1",
+    title: "The Future of AI in Education",
+    slug: "future-of-ai-in-education",
+    excerpt: "Exploring how artificial intelligence is transforming the educational landscape and what it means for students and educators.",
     content: `
-      <h2>Revolutionizing the Classroom</h2>
-      <p>Artificial intelligence is fundamentally changing how we approach education. From personalized learning pathways to intelligent tutoring systems, AI offers new possibilities for both students and educators.</p>
-      
-      <p>Recent studies show that AI-assisted learning can improve student outcomes by up to 30% in certain subjects, particularly in mathematics and language acquisition. These systems adapt to individual learning styles, providing targeted support where students need it most.</p>
-      
-      <h2>Addressing Challenges</h2>
-      <p>Despite its promise, implementing AI in education faces several obstacles. Privacy concerns, equitable access, and the need for human connection in learning environments all require careful consideration.</p>
-      
-      <p>Educators must be partners in this transformation, with AI serving as a tool to enhance teaching rather than replace the essential human elements of education.</p>
-      
-      <h2>Looking Forward</h2>
-      <p>The next decade will likely see AI become an integrated part of educational infrastructure, from administrative tasks to classroom activities. Preparing both teachers and students for this future requires thoughtful policy development and curriculum updates that include digital literacy and ethical considerations in AI.</p>
+      <p>Artificial intelligence is rapidly changing how we approach education. From personalized learning experiences to automated grading systems, AI technologies are making their way into classrooms around the world.</p>
+      <h2>Personalized Learning Paths</h2>
+      <p>One of the most promising applications of AI in education is the ability to create truly personalized learning experiences. By analyzing a student's performance, learning style, and pace, AI systems can adapt educational content to meet individual needs.</p>
+      <p>These systems can identify knowledge gaps and suggest specific resources or exercises to address them. They can also recognize when a student is ready to advance to more challenging material, ensuring that learners are neither bored by content that's too easy nor frustrated by material that's too difficult.</p>
+      <h2>Intelligent Tutoring Systems</h2>
+      <p>AI-powered tutoring systems can provide immediate feedback and support to students, acting as virtual teaching assistants available 24/7. These systems can answer questions, explain concepts, and guide students through complex problem-solving processes.</p>
+      <p>While they can't replace the human connection and intuition of a good teacher, these intelligent tutors can supplement classroom instruction and provide additional support outside of school hours.</p>
+      <h2>Challenges and Ethical Considerations</h2>
+      <p>Despite its potential benefits, the integration of AI in education also raises important questions and challenges:</p>
+      <ul>
+        <li>Data privacy and security concerns regarding student information</li>
+        <li>The risk of algorithmic bias affecting educational opportunities</li>
+        <li>Ensuring equitable access to AI-enhanced educational tools</li>
+        <li>Balancing technological efficiency with human connection and social learning</li>
+      </ul>
+      <p>As we continue to develop and implement AI in educational settings, it's crucial that we address these considerations thoughtfully and proactively.</p>
+      <h2>Preparing Students for an AI-Enhanced Future</h2>
+      <p>Beyond using AI as a teaching tool, educators must also prepare students to live and work in a world increasingly shaped by artificial intelligence. This means developing curricula that emphasize:</p>
+      <ul>
+        <li>Critical thinking and problem-solving skills</li>
+        <li>Digital literacy and understanding of AI capabilities and limitations</li>
+        <li>Ethical reasoning about technology use and development</li>
+        <li>Creativity and uniquely human skills that complement rather than compete with AI</li>
+      </ul>
+      <p>By thoughtfully integrating AI into education while preparing students to be informed citizens in an AI-enhanced world, we can harness the potential of these technologies to create more effective, accessible, and personalized learning experiences.</p>
     `,
-    coverImage: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=800&h=600&fit=crop",
+    coverImage: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
     author: authors[0],
-    category: categories[3], // Technology
-    tags: ["Artificial Intelligence", "Education Technology", "Machine Learning", "Future of Learning"],
-    publishedAt: "2023-09-10T08:00:00Z",
+    category: categories[0],
+    tags: ["AI", "Education Technology", "Future of Learning"],
+    publishedAt: "2023-04-15T08:00:00Z",
+    updatedAt: "2023-04-16T10:30:00Z",
+    featured: true,
     readTime: 8,
-    likes: 127,
-    views: 3205,
-    comments: [comments[0], comments[1]]
+    likes: 135,
+    views: 2450,
+    comments: [],
+    status: "published"
   },
   {
-    id: "post2",
-    title: "Classical Literature in a Digital Age",
-    slug: "classical-literature-digital-age",
-    excerpt: "How technological tools are providing new insights into ancient texts and making them accessible to modern audiences",
+    id: "post-pending-1",
+    title: "Should Attendance Be Mandatory in College?",
+    slug: "should-attendance-be-mandatory",
+    excerpt: "Examining the pros and cons of mandatory attendance policies in higher education and their impact on student success.",
     content: `
-      <h2>Digitizing the Classics</h2>
-      <p>The digitization of classical texts has revolutionized how scholars approach literary analysis. Advanced computational methods can now identify patterns, themes, and stylistic elements across vast collections of literature that would be impossible to process manually.</p>
+      <p>The debate over mandatory attendance policies in higher education continues to spark discussion among educators, administrators, and students alike. While some institutions strictly enforce attendance requirements, others leave it entirely up to the student's discretion. This article explores both sides of this ongoing discussion.</p>
       
-      <p>Projects like the Digital Humanities Initiative have made thousands of ancient manuscripts freely accessible online, democratizing access to cultural heritage that was once limited to those with academic credentials.</p>
+      <h2>Arguments for Mandatory Attendance</h2>
       
-      <h2>New Interpretations</h2>
-      <p>Digital tools are also enabling new interpretations of familiar works. Text analysis algorithms have revealed previously unnoticed connections between different authors and texts, challenging long-held assumptions about influence and originality in the classical canon.</p>
+      <p>Proponents of mandatory attendance policies point to several potential benefits:</p>
       
-      <p>Virtual reality recreations of historical settings provide context for these works, allowing readers to immerse themselves in the worlds that shaped these timeless stories.</p>
+      <h3>Correlation with Academic Performance</h3>
+      <p>Research has consistently shown a positive correlation between class attendance and academic performance. Students who regularly attend class typically earn higher grades than those with spotty attendance records. This correlation exists across disciplines and institution types.</p>
       
-      <h2>Preserving Cultural Heritage</h2>
-      <p>Beyond academic interest, digital preservation ensures these foundational texts survive for future generations. Climate-controlled physical archives are no longer the only safeguard for literary heritage—distributed digital copies provide resilience against loss.</p>
+      <h3>Professional Skill Development</h3>
+      <p>Regular attendance helps students develop professional skills that employers value, such as punctuality, responsibility, and commitment. By requiring attendance, institutions help prepare students for workplace expectations.</p>
       
-      <p>The challenge now is developing sustainable formats and platforms that will remain accessible as technology continues to evolve rapidly.</p>
+      <h3>Classroom Dynamics</h3>
+      <p>Many learning activities depend on student participation and interaction. Discussions, group projects, and peer learning opportunities are all enhanced when all students are present and engaged. Consistent absences can disrupt these dynamics.</p>
+      
+      <h2>Arguments Against Mandatory Attendance</h2>
+      
+      <p>Critics of mandatory attendance policies raise several compelling counterpoints:</p>
+      
+      <h3>Student Autonomy</h3>
+      <p>College students are adults who should be given the responsibility to make their own decisions about their education. Mandatory attendance policies can feel infantilizing and contradict the goal of developing self-directed learners.</p>
+      
+      <h3>Diverse Learning Needs</h3>
+      <p>Not all students learn best in a traditional classroom setting. Some may benefit more from independent study, online resources, or alternative learning approaches. Rigid attendance policies can disadvantage these learners.</p>
+      
+      <h3>External Responsibilities</h3>
+      <p>Many students, particularly non-traditional ones, juggle significant responsibilities outside of their studies, including work and family obligations. Strict attendance policies can create undue hardship for these students.</p>
+      
+      <h2>Alternative Approaches</h2>
+      
+      <p>Some educators and institutions have explored middle-ground approaches:</p>
+      
+      <ul>
+        <li><strong>Participation-focused policies:</strong> Rather than simply marking presence, evaluate meaningful engagement in class activities.</li>
+        <li><strong>Flexible attendance:</strong> Allow a certain number of absences without penalty to accommodate illness or emergencies.</li>
+        <li><strong>Multiple participation pathways:</strong> Offer alternative ways to engage with course material for those who cannot always attend in person.</li>
+        <li><strong>Course-specific policies:</strong> Tailor attendance expectations to the nature of each course rather than applying a one-size-fits-all approach.</li>
+      </ul>
+      
+      <h2>Conclusion</h2>
+      
+      <p>The question of mandatory attendance doesn't have a simple answer. What works best may depend on institutional context, student population, course content, and teaching approach. What's clear is that thoughtful consideration of attendance policies should focus on their ultimate goal: supporting effective learning and student success.</p>
+      
+      <p>Perhaps the most productive approach is to clearly communicate expectations, provide reasonable accommodations for legitimate absences, and design courses where attendance offers clear value to students—making them want to attend rather than feel forced to do so.</p>
     `,
-    coverImage: "https://images.unsplash.com/photo-1536412597336-ade7b523ecfc?w=800&h=600&fit=crop",
+    coverImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
     author: authors[2],
-    category: categories[2], // Humanities
-    tags: ["Classical Literature", "Digital Humanities", "Literary Analysis", "Cultural Heritage"],
-    publishedAt: "2023-09-05T10:30:00Z",
+    category: categories[1],
+    tags: ["Education Policy", "Student Success", "Higher Education"],
+    publishedAt: "2023-09-12T14:30:00Z",
+    updatedAt: "2023-09-12T14:30:00Z",
+    featured: false,
     readTime: 7,
-    likes: 98,
-    views: 2187,
-    comments: [comments[2]]
+    likes: 89,
+    views: 1120,
+    comments: [],
+    status: "pending"
   },
   {
-    id: "post3",
-    title: "Sustainable Business Models for the 21st Century",
-    slug: "sustainable-business-models",
-    excerpt: "Examining how companies are reimagining profitability while prioritizing environmental and social responsibility",
+    id: "post-pending-2",
+    title: "The Role of Internships in Career Development",
+    slug: "role-of-internships-career-development",
+    excerpt: "How internships bridge the gap between academic learning and professional practice, and why they're increasingly essential for today's students.",
     content: `
-      <h2>Beyond the Bottom Line</h2>
-      <p>Traditional business models focused primarily on financial returns are giving way to more holistic approaches that consider environmental impact and social value. This shift represents both ethical progress and strategic adaptation to changing consumer expectations.</p>
+      <p>For today's college students, internships have evolved from a nice-to-have experience to a critical component of career preparation. This shift reflects changes in the job market, employer expectations, and the growing importance of practical skills alongside academic knowledge.</p>
       
-      <p>Research shows that companies embracing sustainability outperform their peers financially over the long term, challenging the notion that environmental responsibility must come at the expense of profitability.</p>
+      <h2>Bridging Theory and Practice</h2>
       
-      <h2>Circular Economy Principles</h2>
-      <p>Leading organizations are adopting circular economy principles that minimize waste and maximize resource efficiency. By designing products for disassembly and reuse, these companies create closed-loop systems that reduce environmental impact while often reducing costs.</p>
+      <p>While classroom learning provides essential theoretical foundations, internships allow students to apply these concepts in real-world settings. This application helps solidify understanding and reveals how academic principles may need to be adapted in professional contexts.</p>
       
-      <p>Startups in particular are finding competitive advantage in building sustainability into their business models from inception, rather than attempting to retrofit existing operations.</p>
+      <p>Internships also expose students to the tacit knowledge and professional norms that rarely appear in textbooks but are crucial for workplace success. From understanding office politics to learning industry-specific software, these practical insights complement formal education.</p>
       
-      <h2>Measuring What Matters</h2>
-      <p>New metrics beyond GDP and quarterly profits are emerging to evaluate business success. Environmental, Social, and Governance (ESG) criteria are increasingly influencing investment decisions, with over $30 trillion now invested according to these principles.</p>
+      <h2>Building the Resume Before Graduation</h2>
       
-      <p>The challenge remains standardizing these measurements to prevent "greenwashing" and ensure transparency in how companies report their impact.</p>
+      <p>The classic catch-22 of needing experience to get experience creates significant challenges for new graduates. Internships help solve this dilemma by providing relevant professional experience before students complete their degrees.</p>
+      
+      <p>Beyond simply having something to list on a resume, internships demonstrate initiative, professional interest, and the ability to function in a workplace environment. For employers reviewing stacks of similar academic credentials, this experience can be a significant differentiator.</p>
+      
+      <h2>Testing Career Paths</h2>
+      
+      <p>Perhaps one of the most valuable aspects of internships is the opportunity they provide for career exploration. Students can test-drive potential career paths with relatively low commitment, gaining insights that help them make more informed decisions about their professional futures.</p>
+      
+      <p>Many students discover that the reality of a particular role or industry differs from their expectations. This revelation can either confirm their career choice or prompt a timely recalibration before graduation.</p>
+      
+      <h2>Building Professional Networks</h2>
+      
+      <p>The connections made during internships can be invaluable for future job searches. Supervisors, colleagues, and even fellow interns become part of a student's professional network, potentially leading to job referrals, recommendations, and industry insights.</p>
+      
+      <p>These relationships also provide students with mentors who can offer guidance as they navigate early career decisions and challenges. Such mentorship often extends beyond the internship period and can be instrumental in professional development.</p>
+      
+      <h2>Challenges and Equity Concerns</h2>
+      
+      <p>Despite their benefits, internships also present challenges, particularly regarding access and equity. Unpaid internships, while common in some industries, can exclude students who cannot afford to work without compensation. Geographic concentration of opportunities in major cities can similarly limit access for students with financial constraints or familial obligations.</p>
+      
+      <p>Universities and employers have a responsibility to address these barriers through initiatives such as:</p>
+      
+      <ul>
+        <li>Paid internship programs</li>
+        <li>Remote or hybrid internship opportunities</li>
+        <li>Internship stipends and scholarships</li>
+        <li>Regional partnerships to create opportunities beyond major metros</li>
+        <li>Course credit options that recognize the educational value of internships</li>
+      </ul>
+      
+      <h2>Maximizing the Internship Experience</h2>
+      
+      <p>For students preparing for internships, several strategies can help maximize the experience:</p>
+      
+      <ul>
+        <li><strong>Set clear learning objectives</strong> for what you hope to gain</li>
+        <li><strong>Seek meaningful projects</strong> rather than just routine tasks</li>
+        <li><strong>Request regular feedback</strong> from supervisors</li>
+        <li><strong>Document accomplishments and learnings</strong> throughout the experience</li>
+        <li><strong>Connect with professionals</strong> across the organization, not just immediate colleagues</li>
+        <li><strong>Reflect critically</strong> on how the experience informs your career goals</li>
+      </ul>
+      
+      <h2>Conclusion</h2>
+      
+      <p>As the line between education and professional preparation continues to blur, internships serve as crucial bridges between these worlds. By providing practical experience, professional connections, and career insights, they help students transition more successfully from academia to the workplace.</p>
+      
+      <p>Both educational institutions and employers have important roles to play in ensuring these opportunities are meaningful, accessible, and aligned with students' educational goals. When structured thoughtfully, internships benefit not only students but also the organizations that host them and ultimately, the industries they serve.</p>
     `,
-    coverImage: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&h=600&fit=crop",
-    author: authors[3],
-    category: categories[4], // Business
-    tags: ["Sustainability", "Business Ethics", "Circular Economy", "Corporate Responsibility"],
-    publishedAt: "2023-08-28T09:15:00Z",
-    readTime: 6,
-    likes: 145,
-    views: 3856,
-    comments: []
-  },
-  {
-    id: "post4",
-    title: "Quantum Computing: Promises and Challenges",
-    slug: "quantum-computing-overview",
-    excerpt: "An accessible exploration of quantum computing principles and their potential implications for science and technology",
-    content: `
-      <h2>Understanding Quantum Mechanics in Computing</h2>
-      <p>Quantum computing leverages the strange properties of quantum mechanics—superposition and entanglement—to process information in fundamentally different ways than classical computers. Rather than using bits that must be either 0 or 1, quantum computers use qubits that can exist in multiple states simultaneously.</p>
-      
-      <p>This property potentially allows quantum computers to solve certain problems exponentially faster than even the most powerful classical supercomputers, particularly in areas like cryptography, materials science, and complex system modeling.</p>
-      
-      <h2>Current State of Development</h2>
-      <p>Despite significant progress, practical quantum computing remains in its early stages. Researchers have developed systems with dozens of qubits, but maintaining quantum coherence—preventing qubits from losing their quantum properties through interaction with the environment—remains a significant challenge.</p>
-      
-      <p>Several approaches to quantum computing architecture are being pursued simultaneously, including superconducting circuits, trapped ions, and topological qubits, each with different advantages and challenges.</p>
-      
-      <h2>Implications for the Future</h2>
-      <p>When fully realized, quantum computers could revolutionize fields from drug discovery to climate modeling by simulating molecular and physical systems with unprecedented accuracy. They may also necessitate completely new approaches to data security, as current encryption methods could become vulnerable.</p>
-      
-      <p>The race for "quantum supremacy"—demonstrating quantum advantage for practical problems—continues to accelerate, with both academic institutions and technology companies making substantial investments in this transformative technology.</p>
-    `,
-    coverImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=600&fit=crop",
+    coverImage: "https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80",
     author: authors[1],
-    category: categories[1], // Science
-    tags: ["Quantum Computing", "Physics", "Computer Science", "Technology Innovation"],
-    publishedAt: "2023-08-20T11:45:00Z",
-    readTime: 10,
-    likes: 186,
-    views: 4120,
-    comments: [comments[0]]
-  },
-  {
-    id: "post5",
-    title: "Expression Through Motion: Contemporary Dance in Academic Settings",
-    slug: "contemporary-dance-academia",
-    excerpt: "Examining how dance programs in universities are bridging artistic expression with scholarly research",
-    content: `
-      <h2>Dance as Academic Discipline</h2>
-      <p>Contemporary dance in university settings has evolved from purely performance-based training to a rich interdisciplinary field that incorporates elements of anthropology, psychology, and cultural studies. This academic approach to movement arts creates space for both physical practice and theoretical exploration.</p>
-      
-      <p>Students in these programs develop not only technical proficiency but also research skills that allow them to contextualize dance within broader societal frameworks and historical movements.</p>
-      
-      <h2>Technology and Movement</h2>
-      <p>Cutting-edge technologies like motion capture and AI-driven choreography tools are opening new possibilities for both creating and analyzing dance. These technical innovations allow for precise documentation of ephemeral performances and create new modes of creative expression.</p>
-      
-      <p>Interdisciplinary collaborations between dance departments and computer science programs have yielded fascinating projects that explore the relationship between human movement and computational systems.</p>
-      
-      <h2>Community Engagement</h2>
-      <p>University dance programs increasingly emphasize community engagement and accessibility, bringing artistic expression to diverse populations both on and off campus. These initiatives recognize dance as not just an elite art form but as a universal language for communication and connection.</p>
-      
-      <p>Through outreach programs, academic dance departments are helping preserve cultural dance traditions while also creating platforms for innovation and cross-cultural dialogue through movement.</p>
-    `,
-    coverImage: "https://images.unsplash.com/photo-1547153760-18fc86324498?w=800&h=600&fit=crop",
-    author: authors[4],
-    category: categories[0], // Arts
-    tags: ["Contemporary Dance", "Performing Arts", "Movement Studies", "Creative Expression"],
-    publishedAt: "2023-08-15T14:00:00Z",
-    readTime: 5,
+    category: categories[3],
+    tags: ["Internships", "Career Development", "Professional Skills"],
+    publishedAt: "2023-08-28T09:15:00Z",
+    updatedAt: "2023-08-29T11:45:00Z",
+    featured: false,
+    readTime: 9,
     likes: 112,
-    views: 1978,
-    comments: [comments[2]]
-  },
-  {
-    id: "post6",
-    title: "Climate Science Education: Bridging Knowledge Gaps",
-    slug: "climate-science-education",
-    excerpt: "How educational institutions are addressing climate literacy and preparing students to tackle environmental challenges",
-    content: `
-      <h2>The Climate Literacy Challenge</h2>
-      <p>Despite scientific consensus on climate change, significant knowledge gaps persist among students and the general public. Educational institutions are now developing integrated approaches to climate science that span disciplines from atmospheric physics to economics and psychology.</p>
-      
-      <p>These comprehensive curricula aim to provide not just scientific understanding but also the skills needed to evaluate policy options and engage in informed civic discourse about environmental issues.</p>
-      
-      <h2>Experiential Learning Approaches</h2>
-      <p>Hands-on learning has proven particularly effective in climate education. Field studies, citizen science projects, and campus sustainability initiatives give students practical experience with both the challenges and solutions related to climate change.</p>
-      
-      <p>These approaches help make abstract global problems tangible and actionable at the local level, combating the sense of helplessness that can accompany climate awareness.</p>
-      
-      <h2>Preparing Future Leaders</h2>
-      <p>Beyond general education, specialized programs are emerging to train the next generation of climate scientists, policy experts, and sustainable business leaders. These interdisciplinary programs recognize that addressing climate change requires collaboration across traditionally siloed fields.</p>
-      
-      <p>Alumni of these programs are already making significant contributions to renewable energy development, conservation efforts, and climate policy at local, national, and international levels.</p>
-    `,
-    coverImage: "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&h=600&fit=crop",
-    author: authors[4],
-    category: categories[1], // Science
-    tags: ["Climate Science", "Environmental Education", "Sustainability", "STEM Education"],
-    publishedAt: "2023-08-10T16:30:00Z",
-    readTime: 7,
-    likes: 168,
-    views: 3245,
-    comments: []
+    views: 1876,
+    comments: [],
+    status: "pending"
   }
 ];
 
-// Export the posts array
-export const getAllPosts = (): Post[] => {
-  return posts;
+// Ensure all posts have the status field
+posts.forEach(post => {
+  if (!post.status) {
+    // Randomly assign a status for demonstration
+    const statuses: Array<Post['status']> = ['draft', 'pending', 'published', 'rejected'];
+    post.status = statuses[Math.floor(Math.random() * statuses.length)];
+  }
+});
+
+// Add some pending posts for the admin to approve
+posts.push(
+  {
+    id: "post-pending-1",
+    title: "Should Attendance Be Mandatory in College?",
+    slug: "should-attendance-be-mandatory",
+    excerpt: "Examining the pros and cons of mandatory attendance policies in higher education and their impact on student success.",
+    content: `
+      <p>The debate over mandatory attendance policies in higher education continues to spark discussion among educators, administrators, and students alike. While some institutions strictly enforce attendance requirements, others leave it entirely up to the student's discretion. This article explores both sides of this ongoing discussion.</p>
+      
+      <h2>Arguments for Mandatory Attendance</h2>
+      
+      <p>Proponents of mandatory attendance policies point to several potential benefits:</p>
+      
+      <h3>Correlation with Academic Performance</h3>
+      <p>Research has consistently shown a positive correlation between class attendance and academic performance. Students who regularly attend class typically earn higher grades than those with spotty attendance records. This correlation exists across disciplines and institution types.</p>
+      
+      <h3>Professional Skill Development</h3>
+      <p>Regular attendance helps students develop professional skills that employers value, such as punctuality, responsibility, and commitment. By requiring attendance, institutions help prepare students for workplace expectations.</p>
+      
+      <h3>Classroom Dynamics</h3>
+      <p>Many learning activities depend on student participation and interaction. Discussions, group projects, and peer learning opportunities are all enhanced when all students are present and engaged. Consistent absences can disrupt these dynamics.</p>
+      
+      <h2>Arguments Against Mandatory Attendance</h2>
+      
+      <p>Critics of mandatory attendance policies raise several compelling counterpoints:</p>
+      
+      <h3>Student Autonomy</h3>
+      <p>College students are adults who should be given the responsibility to make their own decisions about their education. Mandatory attendance policies can feel infantilizing and contradict the goal of developing self-directed learners.</p>
+      
+      <h3>Diverse Learning Needs</h3>
+      <p>Not all students learn best in a traditional classroom setting. Some may benefit more from independent study, online resources, or alternative learning approaches. Rigid attendance policies can disadvantage these learners.</p>
+      
+      <h3>External Responsibilities</h3>
+      <p>Many students, particularly non-traditional ones, juggle significant responsibilities outside of their studies, including work and family obligations. Strict attendance policies can create undue hardship for these students.</p>
+      
+      <h2>Alternative Approaches</h2>
+      
+      <p>Some educators and institutions have explored middle-ground approaches:</p>
+      
+      <ul>
+        <li><strong>Participation-focused policies:</strong> Rather than simply marking presence, evaluate meaningful engagement in class activities.</li>
+        <li><strong>Flexible attendance:</strong> Allow a certain number of absences without penalty to accommodate illness or emergencies.</li>
+        <li><strong>Multiple participation pathways:</strong> Offer alternative ways to engage with course material for those who cannot always attend in person.</li>
+        <li><strong>Course-specific policies:</strong> Tailor attendance expectations to the nature of each course rather than applying a one-size-fits-all approach.</li>
+      </ul>
+      
+      <h2>Conclusion</h2>
+      
+      <p>The question of mandatory attendance doesn't have a simple answer. What works best may depend on institutional context, student population, course content, and teaching approach. What's clear is that thoughtful consideration of attendance policies should focus on their ultimate goal: supporting effective learning and student success.</p>
+      
+      <p>Perhaps the most productive approach is to clearly communicate expectations, provide reasonable accommodations for legitimate absences, and design courses where attendance offers clear value to students—making them want to attend rather than feel forced to do so.</p>
+    `,
+    coverImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    author: authors[2],
+    category: categories[1],
+    tags: ["Education Policy", "Student Success", "Higher Education"],
+    publishedAt: "2023-09-12T14:30:00Z",
+    updatedAt: "2023-09-12T14:30:00Z",
+    featured: false,
+    readTime: 7,
+    likes: 89,
+    views: 1120,
+    comments: [],
+    status: "pending"
+  },
+  {
+    id: "post-pending-2",
+    title: "The Role of Internships in Career Development",
+    slug: "role-of-internships-career-development",
+    excerpt: "How internships bridge the gap between academic learning and professional practice, and why they're increasingly essential for today's students.",
+    content: `
+      <p>For today's college students, internships have evolved from a nice-to-have experience to a critical component of career preparation. This shift reflects changes in the job market, employer expectations, and the growing importance of practical skills alongside academic knowledge.</p>
+      
+      <h2>Bridging Theory and Practice</h2>
+      
+      <p>While classroom learning provides essential theoretical foundations, internships allow students to apply these concepts in real-world settings. This application helps solidify understanding and reveals how academic principles may need to be adapted in professional contexts.</p>
+      
+      <p>Internships also expose students to the tacit knowledge and professional norms that rarely appear in textbooks but are crucial for workplace success. From understanding office politics to learning industry-specific software, these practical insights complement formal education.</p>
+      
+      <h2>Building the Resume Before Graduation</h2>
+      
+      <p>The classic catch-22 of needing experience to get experience creates significant challenges for new graduates. Internships help solve this dilemma by providing relevant professional experience before students complete their degrees.</p>
+      
+      <p>Beyond simply having something to list on a resume, internships demonstrate initiative, professional interest, and the ability to function in a workplace environment. For employers reviewing stacks of similar academic credentials, this experience can be a significant differentiator.</p>
+      
+      <h2>Testing Career Paths</h2>
+      
+      <p>Perhaps one of the most valuable aspects of internships is the opportunity they provide for career exploration. Students can test-drive potential career paths with relatively low commitment, gaining insights that help them make more informed decisions about their professional futures.</p>
+      
+      <p>Many students discover that the reality of a particular role or industry differs from their expectations. This revelation can either confirm their career choice or prompt a timely recalibration before graduation.</p>
+      
+      <h2>Building Professional Networks</h2>
+      
+      <p>The connections made during internships can be invaluable for future job searches. Supervisors, colleagues, and even fellow interns become part of a student's professional network, potentially leading to job referrals, recommendations, and industry insights.</p>
+      
+      <p>These relationships also provide students with mentors who can offer guidance as they navigate early career decisions and challenges. Such mentorship often extends beyond the internship period and can be instrumental in professional development.</p>
+      
+      <h2>Challenges and Equity Concerns</h2>
+      
+      <p>Despite their benefits, internships also present challenges, particularly regarding access and equity. Unpaid internships, while common in some industries, can exclude students who cannot afford to work without compensation. Geographic concentration of opportunities in major cities can similarly limit access for students with financial constraints or familial obligations.</p>
+      
+      <p>Universities and employers have a responsibility to address these barriers through initiatives such as:</p>
+      
+      <ul>
+        <li>Paid internship programs</li>
+        <li>Remote or hybrid internship opportunities</li>
+        <li>Internship stipends and scholarships</li>
+        <li>Regional partnerships to create opportunities beyond major metros</li>
+        <li>Course credit options that recognize the educational value of internships</li>
+      </ul>
+      
+      <h2>Maximizing the Internship Experience</h2>
+      
+      <p>For students preparing for internships, several strategies can help maximize the experience:</p>
+      
+      <ul>
+        <li><strong>Set clear learning objectives</strong> for what you hope to gain</li>
+        <li><strong>Seek meaningful projects</strong> rather than just routine tasks</li>
+        <li><strong>Request regular feedback</strong> from supervisors</li>
+        <li><strong>Document accomplishments and learnings</strong> throughout the experience</li>
+        <li><strong>Connect with professionals</strong> across the organization, not just immediate colleagues</li>
+        <li><strong>Reflect critically</strong> on how the experience informs your career goals</li>
+      </ul>
+      
+      <h2>Conclusion</h2>
+      
+      <p>As the line between education and professional preparation continues to blur, internships serve as crucial bridges between these worlds. By providing practical experience, professional connections, and career insights, they help students transition more successfully from academia to the workplace.</p>
+      
+      <p>Both educational institutions and employers have important roles to play in ensuring these opportunities are meaningful, accessible, and aligned with students' educational goals. When structured thoughtfully, internships benefit not only students but also the organizations that host them and ultimately, the industries they serve.</p>
+    `,
+    coverImage: "https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80",
+    author: authors[1],
+    category: categories[3],
+    tags: ["Internships", "Career Development", "Professional Skills"],
+    publishedAt: "2023-08-28T09:15:00Z",
+    updatedAt: "2023-08-29T11:45:00Z",
+    featured: false,
+    readTime: 9,
+    likes: 112,
+    views: 1876,
+    comments: [],
+    status: "pending"
+  }
+];
+
+// Helper functions for the admin page
+
+// Get all posts
+export const getAllPosts = async (): Promise<Post[]> => {
+  // In a real app, this would be an API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([...posts]);
+    }, 500);
+  });
 };
 
-// Function to get a post by slug
-export const getPostBySlug = (slug: string): Post | undefined => {
-  return posts.find(post => post.slug === slug);
+// Update post status
+export const updatePostStatus = async (postId: string, status: Post['status']): Promise<Post> => {
+  // In a real app, this would be an API call
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const postIndex = posts.findIndex(post => post.id === postId);
+      
+      if (postIndex === -1) {
+        reject(new Error('Post not found'));
+        return;
+      }
+      
+      posts[postIndex] = {
+        ...posts[postIndex],
+        status
+      };
+      
+      resolve(posts[postIndex]);
+    }, 500);
+  });
 };
 
 // Function to get posts by category
-export const getPostsByCategory = (categorySlug: string): Post[] => {
-  return posts.filter(post => post.category.slug === categorySlug);
+export const getPostsByCategory = (categorySlug: string, count: number = 100): Post[] => {
+  return posts
+    .filter(post => post.category.slug === categorySlug && post.status === 'published')
+    .slice(0, count);
 };
 
 // Function to get featured posts
-export const getFeaturedPosts = (): Post[] => {
-  return posts.filter(post => post.featured).length > 0 
-    ? posts.filter(post => post.featured) 
-    : [posts[0]]; // Return first post as featured if none are marked
+export const getFeaturedPosts = (count: number = 5): Post[] => {
+  return posts
+    .filter(post => post.featured && post.status === 'published')
+    .slice(0, count);
 };
 
 // Function to get recent posts
-export const getRecentPosts = (count: number = 3): Post[] => {
+export const getRecentPosts = (count: number = 6): Post[] => {
   return [...posts]
+    .filter(post => post.status === 'published')
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
     .slice(0, count);
 };
 
-// Function to get related posts (same category, excluding current post)
-export const getRelatedPosts = (currentPostId: string, count: number = 3): Post[] => {
-  const currentPost = posts.find(post => post.id === currentPostId);
-  if (!currentPost) return [];
-  
-  return posts
-    .filter(post => post.id !== currentPostId && post.category.slug === currentPost.category.slug)
-    .sort(() => Math.random() - 0.5) // Shuffle for some randomness
+// Function to get popular posts
+export const getPopularPosts = (count: number = 6): Post[] => {
+  return [...posts]
+    .filter(post => post.status === 'published')
+    .sort((a, b) => b.views - a.views)
     .slice(0, count);
 };
 
 // Add getUserById function
 export const getUserById = (userId: string): Author | undefined => {
   return authors.find(author => author.id === userId);
+};
+
+// Get post by slug
+export const getPostBySlug = (slug: string): Post | undefined => {
+  return posts.find(post => post.slug === slug && post.status === 'published');
+};
+
+// Get related posts based on category and tags
+export const getRelatedPosts = (currentPost: Post, count: number = 3): Post[] => {
+  return posts
+    .filter(post => 
+      post.id !== currentPost.id && 
+      post.status === 'published' &&
+      (post.category.id === currentPost.category.id || 
+       post.tags.some(tag => currentPost.tags.includes(tag)))
+    )
+    .sort(() => 0.5 - Math.random()) // Simple shuffle
+    .slice(0, count);
+};
+
+// Function to create new post
+export const createPost = async (postData: Omit<Post, 'id' | 'publishedAt' | 'comments' | 'likes' | 'views' | 'status'>): Promise<Post> => {
+  // In a real app, this would be an API call
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const newPost: Post = {
+        ...postData,
+        id: `post-${Date.now()}`,
+        publishedAt: new Date().toISOString(),
+        likes: 0,
+        views: 0,
+        comments: [],
+        status: 'pending' // New posts are pending by default
+      };
+      
+      posts.push(newPost);
+      resolve(newPost);
+    }, 1000);
+  });
 };

@@ -1,44 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/context/AuthContext';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import { categories, createPost } from '@/data/mockData';
+import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { categories } from '@/data/mockData';
 import { Image, X, Clock, Tag } from 'lucide-react';
 
 const WritePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [excerpt, setExcerpt] = useState('');
-  const [category, setCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState('');
-  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [featuredImage, setFeaturedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [readTime, setReadTime] = useState(5);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  const { user, requireAuth } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { requireAuth, isAuthenticated } = useAuth();
   
   useEffect(() => {
-    if (!requireAuth()) {
-      navigate('/login', { state: { from: '/write' } });
-    }
-  }, [isAuthenticated, navigate, requireAuth]);
+    requireAuth('/login');
+  }, [requireAuth]);
   
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      setCoverImage(file);
+      setFeaturedImage(file);
       
       // Create preview URL
       const reader = new FileReader();
@@ -50,7 +46,7 @@ const WritePost = () => {
   };
   
   const removeImage = () => {
-    setCoverImage(null);
+    setFeaturedImage(null);
     setPreviewUrl(null);
   };
   
@@ -79,33 +75,61 @@ const WritePost = () => {
     return readTimeMinutes;
   };
   
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!title || !content || !category) {
+    if (!title || !content || !selectedCategory) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields",
-        variant: "destructive",
+        title: 'Missing information',
+        description: 'Please fill out all required fields.',
+        variant: 'destructive',
       });
       return;
     }
     
-    setIsSubmitting(true);
-    
-    // Update read time based on content length
-    const calculatedReadTime = calculateReadTime(content);
-    setReadTime(calculatedReadTime);
-    
-    // Simulate API call
-    setTimeout(() => {
-      toast({
-        title: "Post submitted",
-        description: "Your post has been submitted successfully",
+    try {
+      // Find the full category object
+      const category = categories.find(cat => cat.id === selectedCategory);
+      
+      if (!category) {
+        throw new Error('Invalid category');
+      }
+      
+      // Create a slug from the title
+      const slug = title
+        .toLowerCase()
+        .replace(/[^\w\s]/gi, '')
+        .replace(/\s+/g, '-');
+      
+      // Create the post
+      await createPost({
+        title,
+        slug,
+        excerpt: content.substring(0, 150) + '...',
+        content,
+        coverImage: featuredImage,
+        author: user!,
+        category,
+        tags: tags,
+        readTime: Math.ceil(content.split(' ').length / 200), // Rough estimate of reading time
+        updatedAt: new Date().toISOString(),
+        featured: false
       });
-      navigate('/');
-      setIsSubmitting(false);
-    }, 1500);
+      
+      toast({
+        title: 'Post submitted for approval',
+        description: 'Your post has been submitted and is pending admin approval.',
+      });
+      
+      navigate('/blog');
+    } catch (error) {
+      console.error('Error creating post:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to create post. Please try again.',
+        variant: 'destructive',
+      });
+    }
   };
   
   return (
@@ -174,7 +198,7 @@ const WritePost = () => {
                   
                   <div className="space-y-2">
                     <Label htmlFor="category" className="text-base">Category*</Label>
-                    <Select value={category} onValueChange={setCategory}>
+                    <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                       <SelectTrigger id="category">
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>

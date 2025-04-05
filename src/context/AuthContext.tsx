@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Author } from '@/types/blog';
 import { useToast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface AuthContextType {
   user: Author | null;
@@ -10,14 +11,15 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   register: (userData: RegisterData) => Promise<boolean>;
-  requireAuth: (redirectUrl?: string) => boolean; // Add this method
+  requireAuth: (redirectUrl?: string) => boolean;
+  isAdmin: () => boolean;
 }
 
 interface RegisterData {
   name: string;
   email: string;
   password: string;
-  role: 'student' | 'educator';
+  role: 'student' | 'educator' | 'admin';
   department?: string;
 }
 
@@ -35,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<Author | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   // Check if user is already logged in
   useEffect(() => {
@@ -53,9 +56,30 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     
-    // In a real app, this would be an API call
-    // For demo purposes, we'll simulate a successful login
-    // if the email contains "@" and password is not empty
+    // Special case for admin login
+    if (email === 'admin@campusspark.com' && password === 'admin123') {
+      const adminUser: Author = {
+        id: 'admin-1',
+        name: 'Admin User',
+        avatar: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80',
+        role: 'admin',
+        department: 'Administration',
+        bio: 'Campus administrator responsible for content management.'
+      };
+      
+      setUser(adminUser);
+      localStorage.setItem('campusspark_user', JSON.stringify(adminUser));
+      
+      toast({
+        title: 'Admin Login Successful',
+        description: 'Welcome back, Administrator!',
+      });
+      
+      setIsLoading(false);
+      return true;
+    }
+    
+    // Regular user login
     return new Promise((resolve) => {
       setTimeout(() => {
         if (email.includes('@') && password) {
@@ -63,7 +87,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           const newUser: Author = {
             id: 'user-1',
             name: email.split('@')[0].replace(/[.]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()),
-            avatar: '/placeholder.svg',
+            avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80',
             role: 'student',
             department: 'Computer Science',
             bio: 'A student passionate about technology and knowledge sharing.'
@@ -100,6 +124,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       title: 'Logged out',
       description: 'You have been successfully logged out.',
     });
+    navigate('/');
   };
   
   const register = async (userData: RegisterData): Promise<boolean> => {
@@ -113,7 +138,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const newUser: Author = {
           id: `user-${Date.now()}`,
           name: userData.name,
-          avatar: '/placeholder.svg',
+          avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80',
           role: userData.role,
           department: userData.department,
           bio: ''
@@ -134,7 +159,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
   
   // New method to check if user is authenticated and redirect if not
-  const requireAuth = (redirectUrl?: string): boolean => {
+  const requireAuth = (redirectUrl: string = '/login'): boolean => {
     if (!user && !isLoading) {
       toast({
         title: 'Authentication required',
@@ -142,10 +167,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         variant: 'destructive',
       });
       
+      navigate(redirectUrl);
       return false;
     }
     
     return true;
+  };
+  
+  // Method to check if user is an admin
+  const isAdmin = (): boolean => {
+    return user?.role === 'admin';
   };
   
   return (
@@ -158,6 +189,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         register,
         requireAuth,
+        isAdmin,
       }}
     >
       {children}

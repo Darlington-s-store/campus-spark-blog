@@ -40,4 +40,5 @@ export interface Post {
   likes: number;
   views: number;
   comments: Comment[];
+  status: 'draft' | 'pending' | 'published' | 'rejected';
 }
