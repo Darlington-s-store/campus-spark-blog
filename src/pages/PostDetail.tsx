@@ -21,6 +21,8 @@ import {
 } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
+import ReadingProgress from '@/components/blog/ReadingProgress';
+import RelatedPosts from '@/components/blog/RelatedPosts';
 
 const PostDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -87,6 +89,7 @@ const PostDetail = () => {
   
   return (
     <div className="min-h-screen flex flex-col">
+      <ReadingProgress />
       <Header />
       
       <main className="flex-grow">
@@ -220,6 +223,9 @@ const PostDetail = () => {
                     </Button>
                   </div>
                 </div>
+                
+                {/* Related Posts */}
+                <RelatedPosts currentPost={post} />
               </div>
               
               {/* Sidebar */}

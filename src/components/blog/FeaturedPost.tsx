@@ -5,7 +5,6 @@ import { Post } from '@/types/blog';
 import { Clock, User, Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import { categories } from '@/data/mockData';
 
 interface FeaturedPostProps {
   post: Post;
@@ -13,7 +12,6 @@ interface FeaturedPostProps {
 
 const FeaturedPost: React.FC<FeaturedPostProps> = ({ post }) => {
   const formattedDate = format(new Date(post.publishedAt), 'MMMM d, yyyy');
-  const categoryName = categories.find(c => c.slug === post.category)?.name || post.category;
 
   return (
     <div className="relative rounded-xl overflow-hidden">
@@ -29,8 +27,8 @@ const FeaturedPost: React.FC<FeaturedPostProps> = ({ post }) => {
 
       {/* Content overlay */}
       <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10 text-white">
-        <span className={`inline-block mb-4 category-badge bg-category-${post.category}`}>
-          {categoryName}
+        <span className={`inline-block mb-4 category-badge bg-category-${post.category.slug}`}>
+          {post.category.name}
         </span>
         
         <h2 className="text-2xl md:text-4xl font-bold mb-4 leading-tight">

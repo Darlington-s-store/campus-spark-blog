@@ -29,7 +29,7 @@ const getCategoryIcon = (slug: string) => {
 
 const CategoryView: React.FC<CategoryViewProps> = ({ category, posts }) => {
   // Filter posts by category
-  const categoryPosts = posts.filter(post => post.category === category.slug);
+  const categoryPosts = posts.filter(post => post.category.slug === category.slug);
   
   return (
     <div className="space-y-8">

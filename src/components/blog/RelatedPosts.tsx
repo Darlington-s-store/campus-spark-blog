@@ -15,7 +15,7 @@ const RelatedPosts: React.FC<RelatedPostsProps> = ({ currentPost, limit = 3 }) =
   
   // Get posts with the same category, excluding the current post
   const sameCategoryPosts = allPosts.filter(post => 
-    post.category === currentPost.category && post.id !== currentPost.id
+    post.category.slug === currentPost.category.slug && post.id !== currentPost.id
   );
   
   // If we don't have enough posts in the same category, add some recent posts

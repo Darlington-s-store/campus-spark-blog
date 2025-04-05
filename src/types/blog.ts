@@ -31,7 +31,7 @@ export interface Post {
   content: string;
   coverImage?: string;
   author: Author;
-  category: string;
+  category: Category;
   tags: string[];
   publishedAt: string;
   updatedAt?: string;

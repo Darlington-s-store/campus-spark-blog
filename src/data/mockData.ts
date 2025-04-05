@@ -1,4 +1,3 @@
-
 import { Post, Author, Category } from "@/types/blog";
 
 export const categories: Category[] = [
@@ -123,6 +122,7 @@ As we move forward, continuous dialogue between technologists, educators, and st
     featured: true,
     readTime: 8,
     likes: 142,
+    views: 0,
     comments: [
       {
         id: "comment-1",
@@ -188,6 +188,7 @@ The most successful campus projects approach sustainability holistically, consid
     publishedAt: "2023-04-02T09:15:00Z",
     readTime: 6,
     likes: 87,
+    views: 0,
     comments: []
   },
   {
@@ -245,6 +246,7 @@ With continued support from faculty mentors and industry partners, student resea
     publishedAt: "2023-05-18T11:45:00Z",
     readTime: 7,
     likes: 124,
+    views: 0,
     comments: [
       {
         id: "comment-2",
@@ -316,6 +318,7 @@ With proper institutional support and mentorship, student publications can conti
     publishedAt: "2023-06-07T10:30:00Z",
     readTime: 5,
     likes: 93,
+    views: 0,
     comments: []
   },
   {
@@ -377,6 +380,7 @@ As these programs mature, the focus is shifting from simply encouraging startups
     publishedAt: "2023-06-22T08:45:00Z",
     readTime: 9,
     likes: 117,
+    views: 0,
     comments: [
       {
         id: "comment-4",
